@@ -30,7 +30,6 @@ def get_name():
 @app.route("/create_room", methods=["POST"])
 def create_room():
     """Create a new room."""
-
     room_name = request.form.get("room_name")
 
     # Return false if room already exists, otherwise return true
