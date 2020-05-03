@@ -11,7 +11,6 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
     <title>Flack</title>
     <script>
@@ -36,31 +35,29 @@
 
 <body>
 
-    <div id="displayname-wrapper">
-        <h1 class="text-center">Flack</h1>
+    <h1 class="text-center">Flack</h1>
 
-        <!-- Display name input -->
-        <section id="cover" class="min-vh-100">
-            <div id="cover-caption">
-                <div class="container">
-                    <div class="row text-white">
-                        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
-                            <h1 class="display-4 py-2">Tell me your name.</h1>
-                            <div class="px-2">
-                                <form method="" action="#" class="justify-content-center" id="auth-form">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Name" name="name" id="name"
-                                            required autofocus>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-lg" id="name-button">Enter</button>
-                                </form>
-                            </div>
+    <!-- Display name input -->
+    <section id="cover" class="min-vh-100">
+        <div id="cover-caption">
+            <div class="container">
+                <div class="row text-white">
+                    <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+                        <h1 class="display-4 py-2">Tell me your name.</h1>
+                        <div class="px-2">
+                            <form method="" action="#" class="justify-content-center" id="auth-form">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Name" name="name" id="name"
+                                        required autofocus>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg" id="name-button">Enter</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

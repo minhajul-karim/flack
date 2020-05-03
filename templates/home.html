@@ -11,29 +11,105 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+        integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"
+        integrity="sha256-usTqAE1ywvdMtksWzdeWzD75MsfJN0h0U7y2NtZL3N0=" crossorigin="anonymous"></script>
+    <script id="address-template" type="text/x-handlebars-template">
+
+        {% raw -%}
+            <h4>{{ name }}</h4>
+            <small class="text-muted">{{ time }}</small>
+            <p>{{ message }}</p>
+        {%- endraw %}
+
+    </script>
     <script>
 
         if (!localStorage.getItem('name')) {
             window.location.href = '/get_name';
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-
-            const name = localStorage.getItem('name');
-            document.querySelector('#greeting').innerHTML = `Welcome ${name}`;
-
-        })
-
     </script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
     <title>Flack</title>
 </head>
 
 <body>
 
-    <div id="home-wrapper">
-        <h1 class="text-center" id="greeting"></h1>
+    <h1 class="text-center" id="greeting"></h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-room-form">New
+                    channel</button>
+
+                <!-- Create room form -->
+                <div class="modal fade" id="create-room-form" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Create channel</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <br>
+                            </div>
+                            <div class="modal-body">
+                                <p style="color: red; display: none;" id="room-error" class="text-center">Channel
+                                    already exists!</p>
+                                <form id="new-room-form">
+                                    <div class="form-group">
+                                        <label for="room-name" class="col-form-label">Name:</label>
+                                        <input type="text" class="form-control" id="room-name"
+                                            placeholder="e.g. #marketing" autocomplete="off">
+                                    </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="close-button"
+                                    data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- List of rooms -->
+                <div>
+                    <h5>Channels list</h5>
+                    <ul id="rooms-list">
+                        {% for room in rooms %}
+                        <li class="rooms">{{ room }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div id="chat-input">
+                    <textarea class="form-control" id="message" rows="3" placeholder="Write something"></textarea>
+                    <button type="button" class="btn btn-primary" id="send-button">Send</button>
+                </div>
+                <hr>
+
+                <!-- Display messages -->
+                <div id="chat-messages">
+
+                    {% for chat in chats %}
+                    <h4>{{ chat["name"] }}</h4>
+                    <small class="text-muted">{{ chat["time"] }}</small>
+                    <p>{{ chat["message"] }}</p>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Optional JavaScript -->
