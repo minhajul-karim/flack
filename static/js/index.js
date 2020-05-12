@@ -1,27 +1,57 @@
-// Create a template
-const template = Handlebars.compile(
-    document.querySelector("#address-template").innerHTML
+// Template for an individual message
+const message_template = Handlebars.compile(
+    document.querySelector("#message-template").innerHTML
 );
 
+// Template for chat history of a room
+const chat_history_template = Handlebars.compile(
+    document.querySelector("#chat-history").innerHTML
+);
+
+// When the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
     // Display the user name
     const name = localStorage.getItem("name");
-    document.querySelector("#greeting").innerHTML = `Welcome ${name}`;
+    document.querySelector("#username").innerHTML += `${name}`;
 
     // Connect to websocket
     var socket = io.connect(
         location.protocol + "//" + document.domain + ":" + location.port
     );
 
-    let room;
+    let current_room, last_room;
 
-    // Send messages when connected
+    // Get the last channel user used
+    function get_last_room(callback) {
+        const request = new XMLHttpRequest();
+        request.open("GET", "/current_room");
+
+        // When request is complete
+        request.onload = () => {
+            // When request is successful
+            if (request.status >= 200 && request.status < 300) {
+                last_room = request.responseText;
+                callback(last_room);
+            } else {
+                console.log(Error("Can not connect."));
+            }
+        };
+
+        // Send request
+        request.send();
+    }
+
+    // Join last used room when connected
     socket.on("connect", () => {
-        room = "general";
-        joinRoom(room);
+        get_last_room(join_room);
+    });
 
-        // Send button emits a 'send message' event
-        document.querySelector("#send-button").onclick = () => {
+    // Enable enter key to send messages
+    const message_field = document.querySelector("#message");
+    message_field.addEventListener("keyup", (event) => {
+        event.preventDefault();
+        if (event.keyCode == 13) {
+            // document.querySelector("#send-button").click();
             const message = document.querySelector("#message").value;
 
             // Get the current UTC time
@@ -30,82 +60,96 @@ document.addEventListener("DOMContentLoaded", () => {
             const time =
                 current_time.slice(0, 3) + " " + current_time.slice(-12);
 
-            // Send
             socket.send({
                 name: name,
                 message: message,
                 time: time,
-                room: room,
+                room: current_room,
             });
+
+            // Clear the messsage field
             document.querySelector("#message").value = "";
-        };
+        }
     });
 
-    // When a message has been sent, display it
+    // Display message
     socket.on("message", (data) => {
-        const content = template({
+        const content = message_template({
             name: data.name,
             message: data.message,
             time: data.time,
         });
-        document.querySelector("#chat-messages").innerHTML += content;
+        document.querySelector("#message-area").innerHTML += content;
     });
 
-    // Room selection
+    // Click on a room name to join
     document.querySelector("#rooms-list").addEventListener("click", (event) => {
-        // Join room based on user click
+        // Event delegation
         if (event.target && event.target.nodeName == "LI") {
-            let newRoom = event.target.innerHTML;
-            if (newRoom == room) {
-                msg = `You are already in ${room}`;
-                printSysMsg(msg);
+            let new_room = event.target.innerHTML;
+            if (new_room == current_room) {
+                notify(`You are already in ${current_room}.`);
             } else {
-                leaveRoom(room);
-                joinRoom(newRoom);
-                room = newRoom;
+                leave_room(current_room);
+                join_room(new_room);
+                current_room = new_room;
             }
         }
     });
 
+    // Join room
+    function join_room(room) {
+        socket.emit("join", { name: name, room: room });
+
+        // Clear previous chat header and chats
+        document.querySelector("#chat-header").innerHTML = "";
+        document.querySelector("#message-area").innerHTML = "";
+
+        // Display room name at the top
+        const h4 = document.createElement("h4");
+        h4.appendChild(document.createTextNode(`${room}`));
+        document.querySelector("#chat-header").appendChild(h4);
+
+        // Set current room
+        current_room = room;
+        notify("You have joined here.");
+    }
+
+    // Generate template for chat history
+    function load_chat_history(callback) {
+        socket.on("chat history", (data) => {
+            const content = chat_history_template({ chats: data["chats"] });
+            document.querySelector("#message-area").innerHTML += content;
+            callback();
+        });
+    }
+
+    // Move to the end of conversation
+    function move_to_bottom() {
+        const element = document.querySelector("#message-area");
+        element.scrollTop = element.scrollHeight - element.clientHeight;
+    }
+
+    // Display previous messages after joining a room
+    load_chat_history(move_to_bottom);
+
     // Leave room
-    function leaveRoom(room) {
+    function leave_room(room) {
         socket.emit("leave", { name: name, room: room });
     }
 
-    // Join room
-    function joinRoom(room) {
-        socket.emit("join", { name: name, room: room });
-
-        // Clear previous chats
-        document.querySelector("#chat-messages").innerHTML = "";
-
-        // Display room name at the top
-        let h4 = document.createElement("h4");
-        h4.appendChild(document.createTextNode(`${room}`));
-        document.querySelector("#chat-messages").appendChild(h4);
-    }
-
-    // Print system messages
-    function printSysMsg(message) {
+    // Notify users
+    function notify(message) {
         const p = document.createElement("p");
         p.innerHTML = message;
-        document.querySelector("#chat-messages").append(p);
+        document.querySelector("#message-area").append(p);
     }
-
-    // Enable enter key to send messages
-    const messageField = document.querySelector("#message");
-    messageField.addEventListener("keyup", (event) => {
-        event.preventDefault();
-        if (event.keyCode == 13) {
-            document.querySelector("#send-button").click();
-        }
-    });
 
     // Create new room
     document.querySelector("#new-room-form").onsubmit = () => {
         // Initialize a new request
         const request = new XMLHttpRequest();
-        const roomName = document.querySelector("#room-name").value;
+        const new_room = document.querySelector("#room-name").value;
         request.open("POST", "/create_room");
 
         // Callback function when the request is complete
@@ -113,36 +157,35 @@ document.addEventListener("DOMContentLoaded", () => {
             // Extract data received from server
             const data = JSON.parse(request.responseText);
 
-            if (data.status == true) {
-                // Create a new li element
-                const li = document.createElement("li");
+            if (request.status >= 200 && request.status < 300) {
+                if (data.status == true) {
+                    socket.emit("new room", {
+                        new_room: new_room,
+                        current_room: current_room, /// Is this necessay?
+                    });
 
-                // Add room name inside li
-                li.appendChild(document.createTextNode(roomName));
-
-                // Add class to li
-                li.classList.add("rooms");
-
-                // Append li to the ul
-                document.querySelector("#rooms-list").append(li);
-
-                // Click the close button
-                document.querySelector("#close-button").click();
+                    // Click the close button
+                    document.querySelector("#close-button").click();
+                } else {
+                    document.querySelector("#room-error").style.display =
+                        "block";
+                }
             } else {
-                document.querySelector("#room-error").style.display = "block";
+                console.log(Error("Can not connect."));
             }
         };
 
         // Send data with the request
         const data = new FormData();
-        data.append("room_name", roomName);
+        data.append("new_room", new_room);
         request.send(data);
         return false;
     };
 
-    // Clear the room name input field and any error messages while creating new rooms
-    $("#create-room-form").on("show.bs.modal", function (event) {
-        document.querySelector("#room-error").style.display = "none";
-        document.querySelector("#room-name").value = "";
+    // Add new rooom to DOM
+    socket.on("display new room", (data) => {
+        const li = document.createElement("li");
+        li.appendChild(document.createTextNode(data.new_room));
+        document.querySelector("#rooms-list").append(li);
     });
 });

@@ -34,30 +34,42 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light border custom-nav">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <span style="color: yellow;">FLACK</span>
+        </a>
+        <!-- Hamburger icon -->
+        <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+            data-target="#navbar" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar -->
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav ml-auto mt-2">
+                <li class="nav-item"><a class="nav-link" href="#">Demo</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Log In/Out</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <h1 class="text-center">Flack</h1>
-
-    <!-- Display name input -->
-    <section id="cover" class="min-vh-100">
-        <div id="cover-caption">
-            <div class="container">
-                <div class="row text-white">
-                    <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
-                        <h1 class="display-4 py-2">Tell me your name.</h1>
-                        <div class="px-2">
-                            <form method="" action="#" class="justify-content-center" id="auth-form">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Name" name="name" id="name"
-                                        required autofocus>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-lg" id="name-button">Enter</button>
-                            </form>
+    <!-- Sign up form -->
+    <div class="container mt-5" id="signup-area">
+        <div class="row">
+            <div class="col">
+                <div id="registration-area">
+                    <h1 class="display-4 py-2">Sign Up</h1>
+                    <form action="#" method="POST" id="reg_form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Enter your name" name="name" id="name"
+                                required autofocus>
                         </div>
-                    </div>
+                        <button type="submit" class="btn btn-primary btn-lg" id="name-button">Enter</button>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

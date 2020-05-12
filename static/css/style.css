@@ -1,35 +1,116 @@
-body {
-  background-color: #ecf0f1;
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-#cover {
-  margin-top: 70px;
+.bg-light {
+  background-color: #350d36 !important;
+  border: 0px !important;
+}
+
+nav .navbar-brand {
+  font-size: xx-large;
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+}
+
+.navbar .nav-link:hover {
+  color: yellow !important;
+}
+
+#signup-area {
   text-align: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  position: relative;
 }
 
-#cover-caption {
-  width: 100%;
-  position: relative;
-  z-index: 1;
+#signup-area .form-control {
+  display: inline-block;
+  width: 300px;
 }
 
-/* only used for background overlay not needed for centering */
-#auth-form:before {
-  content: '';
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
+#chat-page {
+  max-width: 100% !important;
+}
+
+#left-side {
+  background-color: #3f0e40;
+  height: calc(100vh - 74px);
+  width: 260px;
+  float: left;
+  color: #fffafa;
+}
+
+#left-side i {
+  font-size: 10px;
+  color: #2bac76;
+  margin-right: 5px;
+}
+
+#left-side #user-info {
+  padding: 20px;
+}
+
+#left-side #channels-header {
+  margin-left: 20px;
+}
+
+#left-side #channels-header i {
+  color: #fff;
+  font-size: 15px;
+}
+
+#left-side #rooms p {
+  font-weight: bold;
+}
+
+#left-side #rooms-list {
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: -1;
-  border-radius: 10px;
+}
+
+#left-side #rooms-list li {
+  padding: 5px 20px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+#left-side #rooms-list li:hover {
+  background-color: #350d36;
+}
+
+#left-side #new-room-form h5 {
+  color: #000;
+}
+
+#left-side #new-room-form p {
+  font-weight: normal;
+}
+
+#right-side {
+  width: calc(100% - 260px);
+  height: calc(100vh - 74px);
+  float: right;
+  padding: 20px;
+}
+
+#right-side #message-area {
+  width: 100%;
+  height: calc(100vh - 253px);
+  background-color: yellow;
+  overflow-y: auto;
+}
+
+#create-room {
+  margin-left: 130px;
+  color: #fffafa;
+  cursor: pointer;
+}
+
+@media (max-width: 599px) {
+  #signup-area .form-control {
+    width: auto;
+  }
 }
 /*# sourceMappingURL=style.css.map */
