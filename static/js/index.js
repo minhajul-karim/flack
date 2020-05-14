@@ -19,31 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
         location.protocol + "//" + document.domain + ":" + location.port
     );
 
-    let current_room, last_room;
-
-    // Get the last channel user used
-    function get_last_room(callback) {
-        const request = new XMLHttpRequest();
-        request.open("GET", "/current_room");
-
-        // When request is complete
-        request.onload = () => {
-            // When request is successful
-            if (request.status >= 200 && request.status < 300) {
-                last_room = request.responseText;
-                callback(last_room);
-            } else {
-                console.log(Error("Can not connect."));
-            }
-        };
-
-        // Send request
-        request.send();
-    }
+    let current_room;
 
     // Join last used room when connected
     socket.on("connect", () => {
-        get_last_room(join_room);
+        // Join the last room user last used
+        if (!localStorage.getItem("last_visited_room")) {
+            localStorage.setItem("last_visited_room", "general");
+        }
+        join_room(localStorage.getItem("last_visited_room"));
     });
 
     // Enable enter key to send messages
@@ -80,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
             time: data.time,
         });
         document.querySelector("#message-area").innerHTML += content;
+        move_to_bottom();
     });
 
     // Click on a room name to join
@@ -97,30 +82,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Join room
-    function join_room(room) {
-        socket.emit("join", { name: name, room: room });
-
-        // Clear previous chat header and chats
-        document.querySelector("#chat-header").innerHTML = "";
-        document.querySelector("#message-area").innerHTML = "";
-
-        // Display room name at the top
-        const h4 = document.createElement("h4");
-        h4.appendChild(document.createTextNode(`${room}`));
-        document.querySelector("#chat-header").appendChild(h4);
-
-        // Set current room
-        current_room = room;
-        notify("You have joined here.");
-    }
-
     // Generate template for chat history
-    function load_chat_history(callback) {
-        socket.on("chat history", (data) => {
-            const content = chat_history_template({ chats: data["chats"] });
-            document.querySelector("#message-area").innerHTML += content;
-            callback();
+    function chat_history_promise() {
+        return new Promise((resolve, reject) => {
+            socket.on("chat history", (data) => {
+                if (data) {
+                    const content = chat_history_template({
+                        chats: data["chats"],
+                    });
+                    document.querySelector(
+                        "#message-area"
+                    ).innerHTML += content;
+                    resolve();
+                } else {
+                    reject("Error: The promsie has been rejected.");
+                }
+            });
         });
     }
 
@@ -130,8 +107,34 @@ document.addEventListener("DOMContentLoaded", () => {
         element.scrollTop = element.scrollHeight - element.clientHeight;
     }
 
-    // Display previous messages after joining a room
-    load_chat_history(move_to_bottom);
+    // Load chat history
+    async function load_chat_history() {
+        await chat_history_promise();
+        move_to_bottom();
+    }
+
+    // Join room
+    function join_room(room) {
+        socket.emit("join", { name: name, room: room });
+
+        // Clear previous chat header and chats
+        document.querySelector("#chat-header").innerHTML = "";
+        document.querySelector("#message-area").innerHTML = "";
+
+        // Display room name at the top
+        const p_element = document.createElement("p");
+        p_element.appendChild(document.createTextNode(`${room}`));
+        document.querySelector("#chat-header").appendChild(p_element);
+        const hr_element = document.createElement("hr");
+        document.querySelector("#chat-header").appendChild(hr_element);
+
+        // Set current room
+        current_room = room;
+        localStorage.setItem("last_visited_room", current_room);
+
+        // Load chat history
+        load_chat_history();
+    }
 
     // Leave room
     function leave_room(room) {
@@ -187,5 +190,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const li = document.createElement("li");
         li.appendChild(document.createTextNode(data.new_room));
         document.querySelector("#rooms-list").append(li);
+    });
+
+    // Logout
+    document.querySelector("#logout").addEventListener("click", () => {
+        localStorage.clear();
+        window.location.href = "/sign_in";
     });
 });

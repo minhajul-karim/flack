@@ -37,11 +37,11 @@ nav .navbar-brand {
     max-width: 100% !important;
 }
 
+$left_side_width: 260px;
 #left-side {
-    // background-color: #95a5a6;
     background-color: #3f0e40;
     height: calc(100vh - 74px);
-    width: 260px;
+    width: $left_side_width;
     float: left;
     color: #fffafa;
 
@@ -91,17 +91,58 @@ nav .navbar-brand {
     }
 }
 
+$nav_height: 74px;
+$room_header_height: 28px;
+$textarea_height: 86px;
+
 #right-side {
-    width: calc(100% - 260px);
-    height: calc(100vh - 74px);
+    width: calc(100% - #{$left_side_width});
+    height: calc(100vh - #{$nav_height});
     float: right;
     padding: 20px;
 
+    #chat-header p {
+        font-weight: bold;
+    }
+
     #message-area {
         width: 100%;
-        height: calc(100vh - 253px);
-        background-color: yellow;
+        height: calc(
+            100vh -
+                (
+                    #{$nav_height} + #{$room_header_height} + #{$textarea_height +
+                        75px}
+                )
+        );
+        // background-color: yellow;
         overflow-y: auto;
+        padding: 15px 0 0 15px;
+    }
+
+    .message-block {
+        display: block;
+        overflow: hidden;
+        p {
+            margin-bottom: 0;
+        }
+        margin-bottom: 15px;
+        .username {
+            font-weight: bold;
+            line-height: 15px;
+        }
+    }
+
+    .chat-left {
+        float: left;
+        margin-right: 10px;
+        img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    .chat-right {
+        overflow: hidden;
     }
 }
 
@@ -109,6 +150,26 @@ nav .navbar-brand {
     margin-left: 130px;
     color: #fffafa;
     cursor: pointer;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 $breakpoint-mobile: 599px;

@@ -12,7 +12,6 @@ socketio = SocketIO(app)
 # Store chats, channels
 chats = {"general": []}
 rooms = ["general"]
-last_room = "general"
 
 
 @app.route("/")
@@ -39,12 +38,6 @@ def create_room():
         rooms.append(new_room)
         chats[new_room] = []
         return jsonify({"status": True})
-
-
-@app.route("/current_room")
-def current_room():
-    """Return last visited room."""
-    return last_room
 
 
 @socketio.on("message")

@@ -15,41 +15,51 @@
         integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"
         integrity="sha256-usTqAE1ywvdMtksWzdeWzD75MsfJN0h0U7y2NtZL3N0=" crossorigin="anonymous"></script>
+
     <script id="message-template" type="text/x-handlebars-template">
             {% raw -%}
-            <h4>
-                {{name}}
-            </h4>
-            <small class="text-muted">
-                {{time}}
-            </small>
-            <p>
-                {{message}}
-            </p>
+            <div class="message-block">
+                <div class="chat-left">
+                    <img src="../static/images/user_image.png" alt="">
+                </div>
+                <div class="chat-right">
+                    <p class="username">
+                        {{name}}
+                    </p>
+                    <small class="text-muted">
+                        {{time}}
+                    </small>
+                    <p>
+                        {{message}}
+                    </p>
+                </div>
+            </div>
             {%- endraw %}
     </script>
+
     <script id="chat-history" type="text/x-handlebars-template">
             {% raw -%}
             {{#each chats}}
-                <p>
-                    {{this.name}}
-                </p>
-                <small class="text-muted">
-                    {{this.time}}
-                </small>
-                <p>
-                    {{this.message}}
-                </p>
+            <div class="message-block">
+                <div class="chat-left">
+                    <img src="../static/images/user_image.png" alt="">
+                </div>
+                <div class="chat-right">
+                    <p class="username">
+                        {{this.name}}
+                    </p>
+                    <small class="text-muted">
+                        {{this.time}}
+                    </small>
+                    <p>
+                        {{this.message}}
+                    </p>
+                </div>
+            </div>
             {{/each}}
             {%- endraw %}
     </script>
-    <script id="new-room" type="text/x-handlebars-template">
-            {% raw -%}
-            <li>
-                {{room_name}}
-            </li>
-            {%- endraw %}
-    </script>
+
     <script>
         if (!localStorage.getItem("name")) {
             window.location.href = "/sign_in";
@@ -71,8 +81,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav ml-auto mt-2">
-                <li class="nav-item"><a class="nav-link" href="#">Demo</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Log In/Out</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">View code</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" id="logout">Log Out</a></li>
             </ul>
         </div>
     </nav>
@@ -138,11 +148,9 @@
         </div>
         <div id="right-side">
             <div id="chat-header"></div>
-            <hr>
-            <div id="message-area">
-            </div>
+            <div id="message-area"></div>
             <div id="input-area">
-                <textarea class="form-control" id="message" rows="3" placeholder="Write something"></textarea>
+                <textarea class="form-control" id="message" rows="3" placeholder="Write message..."></textarea>
             </div>
         </div>
     </div>
