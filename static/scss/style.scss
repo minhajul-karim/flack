@@ -73,12 +73,19 @@ $left_side_width: 260px;
 
     #rooms-list li {
         padding: 5px 20px;
-        margin-top: 5px;
         cursor: pointer;
+    }
+
+    #rooms-list li.active:hover {
+        background-color: #007bff;
     }
 
     #rooms-list li:hover {
         background-color: #350d36;
+    }
+
+    .active {
+        background-color: #007bff;
     }
 
     #new-room-form {

@@ -72,12 +72,19 @@ nav .navbar-brand {
 
 #left-side #rooms-list li {
   padding: 5px 20px;
-  margin-top: 5px;
   cursor: pointer;
+}
+
+#left-side #rooms-list li.active:hover {
+  background-color: #007bff;
 }
 
 #left-side #rooms-list li:hover {
   background-color: #350d36;
+}
+
+#left-side .active {
+  background-color: #007bff;
 }
 
 #left-side #new-room-form h5 {

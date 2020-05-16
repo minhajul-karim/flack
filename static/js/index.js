@@ -21,13 +21,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let current_room;
 
-    // Join last used room when connected
+    // Join last visted room when connected
     socket.on("connect", () => {
         // Join the last room user last used
-        if (!localStorage.getItem("last_visited_room")) {
+        let last_visited_room = localStorage.getItem("last_visited_room");
+        if (!last_visited_room) {
             localStorage.setItem("last_visited_room", "general");
+            last_visited_room = "general";
+            // Make general active room
+            document.getElementsByClassName("room")[0].className += " active";
+        } else {
+            // Make the last visited room active
+            let all_rooms = document.getElementsByClassName("room");
+            for (let i = 0; i < all_rooms.length; i++) {
+                if (all_rooms[i].innerHTML == last_visited_room) {
+                    all_rooms[i].className += " active";
+                    break;
+                }
+            }
         }
-        join_room(localStorage.getItem("last_visited_room"));
+        join_room(last_visited_room);
     });
 
     // Enable enter key to send messages
@@ -78,6 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 leave_room(current_room);
                 join_room(new_room);
                 current_room = new_room;
+                let current_active = document.getElementsByClassName("active");
+                current_active[0].className = current_active[0].className.replace(
+                    "active",
+                    ""
+                );
+                event.target.className += "active";
             }
         }
     });
@@ -87,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return new Promise((resolve, reject) => {
             socket.on("chat history", (data) => {
                 if (data) {
+                    console.log("In chat history promise...");
                     const content = chat_history_template({
                         chats: data["chats"],
                     });
@@ -108,10 +128,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Load chat history
-    async function load_chat_history() {
-        await chat_history_promise();
-        move_to_bottom();
-    }
+    // async function load_chat_history() {
+    //     await chat_history_promise();
+    //     move_to_bottom();
+    // }
 
     // Join room
     function join_room(room) {
@@ -130,10 +150,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Set current room
         current_room = room;
-        localStorage.setItem("last_visited_room", current_room);
+        localStorage.setItem("last_visited_room", room);
 
         // Load chat history
-        load_chat_history();
+        // load_chat_history();
+        chat_history_promise().then(move_to_bottom);
+        notify("You have joined here.");
     }
 
     // Leave room

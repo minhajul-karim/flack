@@ -71,10 +71,6 @@ def message(data):
 def join(data):
     """Join a room."""
     room = data["room"]
-
-    # Set last visited room
-    global last_room
-    last_room = room
     join_room(room)
     emit("chat history", {"chats": chats[room]})
 
