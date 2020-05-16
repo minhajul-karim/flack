@@ -12,6 +12,7 @@ const chat_history_template = Handlebars.compile(
 document.addEventListener("DOMContentLoaded", () => {
     // Display the user name
     const name = localStorage.getItem("name");
+    let last_visited_room = localStorage.getItem("last_visited_room");
     document.querySelector("#username").innerHTML += `${name}`;
 
     // Connect to websocket
@@ -19,16 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
         location.protocol + "//" + document.domain + ":" + location.port
     );
 
-    let current_room;
-
     // Join last visted room when connected
     socket.on("connect", () => {
-        // Join the last room user last used
-        let last_visited_room = localStorage.getItem("last_visited_room");
+        // Join the last room user last visited
         if (!last_visited_room) {
-            localStorage.setItem("last_visited_room", "general");
             last_visited_room = "general";
-            // Make general active room
+            localStorage.setItem("last_visited_room", last_visited_room);
+
+            // Display general as an active room
             document.getElementsByClassName("room")[0].className += " active";
         } else {
             // Make the last visited room active
@@ -61,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: name,
                 message: message,
                 time: time,
-                room: current_room,
+                room: last_visited_room,
             });
 
             // Clear the messsage field
@@ -85,77 +84,53 @@ document.addEventListener("DOMContentLoaded", () => {
         // Event delegation
         if (event.target && event.target.nodeName == "LI") {
             let new_room = event.target.innerHTML;
-            if (new_room == current_room) {
-                notify(`You are already in ${current_room}.`);
-            } else {
-                leave_room(current_room);
+            if (new_room != last_visited_room) {
+                leave_room(last_visited_room);
                 join_room(new_room);
-                current_room = new_room;
+                last_visited_room = new_room;
                 let current_active = document.getElementsByClassName("active");
-                current_active[0].className = current_active[0].className.replace(
-                    "active",
-                    ""
-                );
-                event.target.className += "active";
+                current_active[0].className = "room";
+                event.target.className += " active";
             }
         }
     });
-
-    // Generate template for chat history
-    function chat_history_promise() {
-        return new Promise((resolve, reject) => {
-            socket.on("chat history", (data) => {
-                if (data) {
-                    console.log("In chat history promise...");
-                    const content = chat_history_template({
-                        chats: data["chats"],
-                    });
-                    document.querySelector(
-                        "#message-area"
-                    ).innerHTML += content;
-                    resolve();
-                } else {
-                    reject("Error: The promsie has been rejected.");
-                }
-            });
-        });
-    }
-
-    // Move to the end of conversation
-    function move_to_bottom() {
-        const element = document.querySelector("#message-area");
-        element.scrollTop = element.scrollHeight - element.clientHeight;
-    }
-
-    // Load chat history
-    // async function load_chat_history() {
-    //     await chat_history_promise();
-    //     move_to_bottom();
-    // }
 
     // Join room
     function join_room(room) {
         socket.emit("join", { name: name, room: room });
 
+        // Set last visited room
+        last_visited_room = room;
+        localStorage.setItem("last_visited_room", room);
+    }
+
+    // Generate chat history
+    socket.on("chat history", (data) => {
         // Clear previous chat header and chats
         document.querySelector("#chat-header").innerHTML = "";
         document.querySelector("#message-area").innerHTML = "";
 
         // Display room name at the top
         const p_element = document.createElement("p");
-        p_element.appendChild(document.createTextNode(`${room}`));
+        p_element.appendChild(document.createTextNode(`${last_visited_room}`));
         document.querySelector("#chat-header").appendChild(p_element);
+
+        // Place an <hr> after room name
         const hr_element = document.createElement("hr");
         document.querySelector("#chat-header").appendChild(hr_element);
 
-        // Set current room
-        current_room = room;
-        localStorage.setItem("last_visited_room", room);
+        // Feed data to chat history template
+        const content = chat_history_template({ chats: data["chats"] });
+        document.querySelector("#message-area").innerHTML += content;
 
-        // Load chat history
-        // load_chat_history();
-        chat_history_promise().then(move_to_bottom);
-        notify("You have joined here.");
+        // Scroll to the bottom of corversation
+        move_to_bottom();
+    });
+
+    // Move to the end of conversation
+    function move_to_bottom() {
+        const element = document.querySelector("#message-area");
+        element.scrollTop = element.scrollHeight - element.clientHeight;
     }
 
     // Leave room
@@ -165,9 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Notify users
     function notify(message) {
-        const p = document.createElement("p");
-        p.innerHTML = message;
-        document.querySelector("#message-area").append(p);
+        const p_element = document.createElement("p");
+        p_element.innerHTML = message;
+        p_element.className = "text-muted";
+        document.querySelector("#message-area").append(p_element);
     }
 
     // Create new room
@@ -186,7 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (data.status == true) {
                     socket.emit("new room", {
                         new_room: new_room,
-                        current_room: current_room, /// Is this necessay?
                     });
 
                     // Click the close button

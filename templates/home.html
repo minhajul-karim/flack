@@ -11,61 +11,12 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.ico') }}" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
-        integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"
-        integrity="sha256-usTqAE1ywvdMtksWzdeWzD75MsfJN0h0U7y2NtZL3N0=" crossorigin="anonymous"></script>
-
-    <script id="message-template" type="text/x-handlebars-template">
-            {% raw -%}
-            <div class="message-block">
-                <div class="chat-left">
-                    <img src="../static/images/user_image.png" alt="">
-                </div>
-                <div class="chat-right">
-                    <p class="username">
-                        {{name}}
-                    </p>
-                    <small class="text-muted">
-                        {{time}}
-                    </small>
-                    <p>
-                        {{message}}
-                    </p>
-                </div>
-            </div>
-            {%- endraw %}
-    </script>
-
-    <script id="chat-history" type="text/x-handlebars-template">
-            {% raw -%}
-            {{#each chats}}
-            <div class="message-block">
-                <div class="chat-left">
-                    <img src="../static/images/user_image.png" alt="">
-                </div>
-                <div class="chat-right">
-                    <p class="username">
-                        {{this.name}}
-                    </p>
-                    <small class="text-muted">
-                        {{this.time}}
-                    </small>
-                    <p>
-                        {{this.message}}
-                    </p>
-                </div>
-            </div>
-            {{/each}}
-            {%- endraw %}
-    </script>
 
     <script>
         if (!localStorage.getItem("name")) {
             window.location.href = "/sign_in";
         }
     </script>
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
     <title>Flack</title>
 </head>
@@ -169,6 +120,55 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/8ad34e41bd.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+        integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"
+        integrity="sha256-usTqAE1ywvdMtksWzdeWzD75MsfJN0h0U7y2NtZL3N0=" crossorigin="anonymous"></script>
+
+    <script id="message-template" type="text/x-handlebars-template">
+        {% raw -%}
+        <div class="message-block">
+            <div class="chat-left">
+                <img src="../static/images/user_image.png" alt="">
+            </div>
+            <div class="chat-right">
+                <p class="username">
+                    {{name}}
+                </p>
+                <small class="text-muted">
+                    {{time}}
+                </small>
+                <p>
+                    {{message}}
+                </p>
+            </div>
+        </div>
+        {%- endraw %}
+    </script>
+
+    <script id="chat-history" type="text/x-handlebars-template">
+        {% raw -%}
+        {{#each chats}}
+            <div class="message-block">
+                <div class="chat-left">
+                    <img src="../static/images/user_image.png" alt="">
+                </div>
+                <div class="chat-right">
+                    <p class="username">
+                        {{this.name}}
+                    </p>
+                    <small class="text-muted">
+                        {{this.time}}
+                    </small>
+                    <p>
+                        {{this.message}}
+                    </p>
+                </div>
+            </div>
+        {{/each}}
+        {%- endraw %}
+    </script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     <script>
         $(document).ready(function () {
             // Clear previous room name or any error messages while creating new rooms

@@ -79,7 +79,6 @@ def join(data):
 def leave(data):
     """Leave a room."""
     leave_room(data["room"])
-    send({"message": data["name"] + " has left."}, room=data["room"])
 
 
 @socketio.on("new room")
