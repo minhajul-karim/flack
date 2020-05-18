@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#username").innerHTML += `${name}`;
 
     // Connect to websocket
-    var socket = io.connect(
+    let socket = io.connect(
         location.protocol + "//" + document.domain + ":" + location.port
     );
 
@@ -43,18 +43,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Enable enter key to send messages
-    const message_field = document.querySelector("#message");
-    message_field.addEventListener("keyup", (event) => {
+    let text_area = document.querySelector("#message");
+    text_area.addEventListener("keyup", (event) => {
         event.preventDefault();
-        if (event.keyCode == 13) {
-            // document.querySelector("#send-button").click();
-            const message = document.querySelector("#message").value;
 
-            // Get the current UTC time
-            const current_date = new Date();
-            const current_time = current_date.toUTCString();
-            const time =
-                current_time.slice(0, 3) + " " + current_time.slice(-12);
+        // When ENTER key pressed without shift key
+        if (event.keyCode == 13 && !event.shiftKey) {
+            let message = document.querySelector("#message").value;
+            let current_date = new Date();
+            let current_time = current_date.toUTCString();
+            let time =
+                current_time.slice(0, 4) +
+                " " +
+                current_time.slice(17, 22) +
+                " " +
+                current_time.slice(-3);
 
             socket.send({
                 name: name,
@@ -62,9 +65,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 time: time,
                 room: last_visited_room,
             });
-
-            // Clear the messsage field
+            // Clear the text area
             document.querySelector("#message").value = "";
+        }
+        // Display multi-line message instruction
+        let message_length = document.querySelector("#message").value.length;
+        if (message_length > 0) {
+            document.querySelector("#multiline-instruction").style.display =
+                "block";
+        } else {
+            document.querySelector("#multiline-instruction").style.display =
+                "none";
         }
     });
 
@@ -88,9 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 leave_room(last_visited_room);
                 join_room(new_room);
                 last_visited_room = new_room;
-                let current_active = document.getElementsByClassName("active");
-                current_active[0].className = "room";
-                event.target.className += " active";
+                activate();
             }
         }
     });
@@ -133,17 +142,15 @@ document.addEventListener("DOMContentLoaded", () => {
         element.scrollTop = element.scrollHeight - element.clientHeight;
     }
 
+    function activate() {
+        let current_active = document.getElementsByClassName("active");
+        current_active[0].className = "room";
+        event.target.className += " active";
+    }
+
     // Leave room
     function leave_room(room) {
         socket.emit("leave", { name: name, room: room });
-    }
-
-    // Notify users
-    function notify(message) {
-        const p_element = document.createElement("p");
-        p_element.innerHTML = message;
-        p_element.className = "text-muted";
-        document.querySelector("#message-area").append(p_element);
     }
 
     // Create new room
@@ -163,6 +170,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     socket.emit("new room", {
                         new_room: new_room,
                     });
+
+                    // Join new room
+                    join_room(new_room);
 
                     // Click the close button
                     document.querySelector("#close-button").click();
@@ -185,8 +195,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add new rooom to DOM
     socket.on("display new room", (data) => {
         const li = document.createElement("li");
+        li.className = "room";
         li.appendChild(document.createTextNode(data.new_room));
         document.querySelector("#rooms-list").append(li);
+        activate();
     });
 
     // Logout
@@ -194,4 +206,12 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.clear();
         window.location.href = "/sign_in";
     });
+
+    // Notify users
+    function notify(message) {
+        const p_element = document.createElement("p");
+        p_element.innerHTML = message;
+        p_element.className = "text-muted";
+        document.querySelector("#message-area").append(p_element);
+    }
 });

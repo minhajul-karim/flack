@@ -104,6 +104,9 @@
             <div id="input-area">
                 <textarea class="form-control" id="message" rows="3" placeholder="Write message..."
                     autofocus></textarea>
+                <small id="multiline-instruction"><span class="font-weight-bold">Return</span> to
+                    send.<span class="font-weight-bold">&nbsp;&nbsp;&nbsp;Shift + Return</span> to add a new
+                    line</small>
             </div>
         </div>
     </div>
@@ -138,8 +141,8 @@
                 <small class="text-muted">
                     {{time}}
                 </small>
-                <p>
-                    {{message}}
+                <p class="chat-message">
+                    {{~message~}}
                 </p>
             </div>
         </div>
@@ -160,8 +163,8 @@
                     <small class="text-muted">
                         {{this.time}}
                     </small>
-                    <p>
-                        {{this.message}}
+                    <p class="chat-message">
+                        {{~this.message~}}
                     </p>
                 </div>
             </div>

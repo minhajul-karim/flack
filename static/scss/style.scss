@@ -112,13 +112,17 @@ $textarea_height: 86px;
         font-weight: bold;
     }
 
+    .chat-message {
+        white-space: pre-wrap;
+    }
+
     #message-area {
         width: 100%;
         height: calc(
             100vh -
                 (
                     #{$nav_height} + #{$room_header_height} + #{$textarea_height +
-                        75px}
+                        90px}
                 )
         );
         // background-color: yellow;
@@ -150,6 +154,12 @@ $textarea_height: 86px;
 
     .chat-right {
         overflow: hidden;
+    }
+
+    #multiline-instruction {
+        float: right;
+        display: none;
+        margin: 5px 10px 0 0;
     }
 }
 
