@@ -1,5 +1,7 @@
 ul,
-li {
+li,
+body,
+p {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -11,6 +13,7 @@ li {
 }
 
 nav .navbar-brand {
+  color: #fff !important;
   font-size: xx-large;
 }
 
@@ -19,7 +22,7 @@ nav .navbar-brand {
 }
 
 .navbar .nav-link:hover {
-  color: yellow !important;
+  color: #ecf0f1 !important;
 }
 
 #signup-area {
