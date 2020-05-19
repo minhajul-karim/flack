@@ -43,7 +43,7 @@ nav .navbar-brand {
   color: #fffafa;
 }
 
-#left-side i {
+#left-side .fa-circle {
   font-size: 10px;
   color: #2bac76;
   margin-right: 5px;
@@ -57,9 +57,11 @@ nav .navbar-brand {
   margin-left: 20px;
 }
 
-#left-side #channels-header i {
+#left-side #channels-header .fa-plus {
   color: #fff;
   font-size: 15px;
+  margin-left: 130px;
+  cursor: pointer;
 }
 
 #left-side #rooms p {
@@ -152,12 +154,6 @@ nav .navbar-brand {
   margin: 5px 10px 0 0;
 }
 
-#create-room {
-  margin-left: 130px;
-  color: #fffafa;
-  cursor: pointer;
-}
-
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
@@ -181,6 +177,15 @@ nav .navbar-brand {
 @media (max-width: 599px) {
   #signup-area .form-control {
     width: auto;
+  }
+  #left-side {
+    width: 150px;
+  }
+  #left-side .fa-plus {
+    margin-left: 25px !important;
+  }
+  #right-side {
+    width: calc(100% - 150px);
   }
 }
 /*# sourceMappingURL=style.css.map */

@@ -45,7 +45,7 @@ $left_side_width: 260px;
     float: left;
     color: #fffafa;
 
-    i {
+    .fa-circle {
         font-size: 10px;
         color: #2bac76;
         margin-right: 5px;
@@ -57,9 +57,11 @@ $left_side_width: 260px;
 
     #channels-header {
         margin-left: 20px;
-        i {
+        .fa-plus {
             color: #fff;
             font-size: 15px;
+            margin-left: 130px;
+            cursor: pointer;
         }
     }
 
@@ -163,12 +165,6 @@ $textarea_height: 86px;
     }
 }
 
-#create-room {
-    margin-left: 130px;
-    color: #fffafa;
-    cursor: pointer;
-}
-
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
@@ -195,5 +191,15 @@ $breakpoint-mobile: 599px;
         .form-control {
             width: auto;
         }
+    }
+    $small_left_side_width: 150px;
+    #left-side {
+        width: $small_left_side_width;
+        .fa-plus {
+            margin-left: 25px !important;
+        }
+    }
+    #right-side {
+        width: calc(100% - #{$small_left_side_width});
     }
 }

@@ -98,8 +98,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if (new_room != last_visited_room) {
                 leave_room(last_visited_room);
                 join_room(new_room);
-                last_visited_room = new_room;
-                activate();
+                last_visited_room = new_room; // Redundant? As join_room() updates last_visited_room
+
+                // Remove previous active class
+                inactive();
+
+                // Make current LI active
+                event.target.className += " active";
             }
         }
     });
@@ -140,12 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function move_to_bottom() {
         const element = document.querySelector("#message-area");
         element.scrollTop = element.scrollHeight - element.clientHeight;
-    }
-
-    function activate() {
-        let current_active = document.getElementsByClassName("active");
-        current_active[0].className = "room";
-        event.target.className += " active";
     }
 
     // Leave room
@@ -194,11 +193,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add new rooom to DOM
     socket.on("display new room", (data) => {
+        let newly_created_room = data.new_room;
         const li = document.createElement("li");
+        li.appendChild(document.createTextNode(newly_created_room));
         li.className = "room";
-        li.appendChild(document.createTextNode(data.new_room));
         document.querySelector("#rooms-list").append(li);
-        activate();
+
+        // Remove previous active class
+        if (newly_created_room == localStorage.getItem("last_visited_room")) {
+            inactive();
+            li.className += " active";
+        }
     });
 
     // Logout
@@ -206,6 +211,11 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.clear();
         window.location.href = "/sign_in";
     });
+
+    function inactive() {
+        let current_active = document.getElementsByClassName("active");
+        current_active[0].className = "room";
+    }
 
     // Notify users
     function notify(message) {
