@@ -151,6 +151,10 @@ nav .navbar-brand {
   overflow: hidden;
 }
 
+#right-side #message {
+  resize: none;
+}
+
 #right-side #multiline-instruction {
   float: right;
   display: none;

@@ -161,6 +161,10 @@ $textarea_height: 86px;
         overflow: hidden;
     }
 
+    #message {
+        resize: none;
+    }
+
     #multiline-instruction {
         float: right;
         display: none;
