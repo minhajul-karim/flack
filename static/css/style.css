@@ -7,18 +7,31 @@ p {
   list-style: none;
 }
 
-.bg-light {
-  background-color: #350d36 !important;
-  border: 0px !important;
+#signup-header-nav {
+  background-color: #3a133f;
+  overflow: hidden;
+  padding: 10px 20px;
+  color: #fff;
 }
 
-nav .navbar-brand {
-  color: #fff !important;
-  font-size: xx-large;
+#home-header-nav {
+  background-color: #3a133f;
+  overflow: hidden;
+  padding: 10px 20px;
 }
 
-.navbar .nav-link {
-  color: #fff !important;
+#home-header-nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+#home-header-nav ul li:first-child {
+  float: left;
+  color: #fff;
+}
+
+#home-header-nav ul li:last-child {
+  float: right;
 }
 
 .navbar .nav-link:hover {
@@ -40,10 +53,11 @@ nav .navbar-brand {
 
 #left-side {
   background-color: #3f0e40;
-  height: calc(100vh - 73.27px);
+  height: calc(100vh - 44px);
   width: 260px;
   float: left;
   color: #fffafa;
+  position: relative;
 }
 
 #left-side .fa-circle {
@@ -100,9 +114,20 @@ nav .navbar-brand {
   font-weight: normal;
 }
 
+#left-side #footer-nav {
+  position: absolute;
+  left: 5%;
+  bottom: 0;
+  padding: 10px;
+}
+
+#left-side #footer-nav a {
+  color: #fff;
+}
+
 #right-side {
   width: calc(100% - 260px);
-  height: calc(100vh - 74px);
+  height: calc(100vh - (44px));
   float: right;
   padding: 20px;
 }
@@ -117,7 +142,7 @@ nav .navbar-brand {
 
 #right-side #message-area {
   width: 100%;
-  height: calc( 100vh - ( 74px + 28px + 83.89px + 37.44px + 120px ));
+  height: calc( 100vh - ( 44px + 28px + 55px + 54px + 60px ));
   overflow-y: auto;
   padding: 15px 0 0 15px;
 }
@@ -164,6 +189,7 @@ nav .navbar-brand {
 
 #right-side #icons-area {
   width: 100%;
+  position: relative;
   position: absolute;
   left: 0;
   top: 100%;
@@ -171,7 +197,7 @@ nav .navbar-brand {
   border-radius: 0 0 5px 5px;
 }
 
-#right-side #icons-area .text-footer {
+#right-side #icons-area .textarea-icons {
   float: right;
 }
 
@@ -180,21 +206,27 @@ nav .navbar-brand {
 }
 
 #right-side #icons-area i {
-  font-size: 30px;
+  font-size: 20px;
   margin-right: 20px;
   margin-top: 10px;
   color: #007bff;
+  cursor: pointer;
 }
 
 #right-side textarea {
+  height: 55px;
   resize: none;
   border-bottom: 0 !important;
   border-radius: 5px 5px 0 0 !important;
   outline: none !important;
 }
 
-#right-side #multiline-instruction {
-  margin: 10px 10% 0 0;
+#right-side #newline-instruction {
+  position: absolute;
+  left: 0;
+  top: 90px;
+  display: none;
+  margin: 10px 0 0 10px;
 }
 
 /* width */

@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.ico') }}" />
 
@@ -17,7 +16,7 @@
             window.location.href = "/sign_in";
         }
     </script>
-    <script src="https://kit.fontawesome.com/4ed4b00f74.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/4ed4b00f74.js" crossorigin="anonymous"></script> -->
     <style>
 
     </style>
@@ -26,33 +25,24 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-light border custom-nav">
-        <!-- Logo -->
-        <p class="navbar-brand">FLACK</p>
-        <!-- Hamburger icon -->
-        <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
-            data-target="#navbar" data-toggle="collapse" type="button">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- Navbar -->
-        <div class="collapse navbar-collapse" id="navbar">
-            <ul class="navbar-nav ml-auto mt-2">
-                <li class="nav-item"><a class="nav-link" href="https://github.com/minhajul-karim/flack">View code</a>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="" id="logout">Log Out</a></li>
-            </ul>
-        </div>
+    <nav id="home-header-nav">
+        <ul class="list-inline">
+            <li class="list-inline-item font-weight-bold">Flack</li>
+            <li class="list-inline-item"><a class="text-center" href="" id="logout">Logout</a></li>
+        </ul>
     </nav>
 
     <div id="main-area">
         <div id="left-side">
             <div id="user-info">
-                <p id="username"><i class="fas fa-circle"></i></p>
+                <p id="username">
+                    <!-- <i class="fas fa-circle"></i> -->
+                </p>
             </div>
             <div id="rooms">
                 <p id="channels-header">
                     Channels
-                    <i class="fas fa-plus" data-toggle="modal" data-target="#create-room-form"></i>
+                    <!-- <i class="fas fa-plus" data-toggle="modal" data-target="#create-room-form"></i> -->
                 </p>
                 <ul id="rooms-list">
                     {% for room in rooms %}
@@ -100,6 +90,13 @@
                     </div>
                 </form>
             </div>
+            <div id="footer-nav">
+                <ul class="list-inline text-center">
+                    <li class="list-inline-item"><a class="text-center" href="#"><small>View Code</small></a></li>
+                    <li class="list-inline-item"><a class="text-center" href="#"><small>Report a bug</small></a></li>
+                    <li class="list-inline-item"><a class="text-center" href="#"><small>Privacy</small></a></li>
+                </ul>
+            </div>
         </div>
         <div id="right-side">
             <div id="chat-header"></div>
@@ -108,13 +105,20 @@
                 <textarea class="form-control shadow-none" id="message" rows="3" placeholder="Write message..."
                     style="resize: none;"></textarea>
                 <div id="icons-area">
-                    <span class="text-footer"><input type="file" name="" id="file-selector"></span>
-                    <span class="text-footer"><i class="fab fa-telegram-plane" id="send-icon"></i></span>
-                    <span class="text-footer"><label for="file-selector"><i class="fas fa-paperclip"></i></label></span>
-                    <!-- <span class="text-footer"><small id="multiline-instruction"><span
-                                class="font-weight-bold">Return</span> to
-                            send.<span class="font-weight-bold">&nbsp;&nbsp;Shift + Return</span> to add a new
-                            line.</small></span> -->
+                    <span class="textarea-icons">
+                        <!-- <i class="fab fa-telegram-plane" id="send-icon"></i> -->
+                    </span>
+                    <span class="textarea-icons"><input type="file" name="" id="file-selector"></span>
+                    <span class="textarea-icons">
+                        <label for="file-selector">
+                            <!-- <i class="fas fa-paperclip"></i> -->
+                        </label>
+                    </span>
+                </div>
+                <div id="newline-instruction">
+                    <small><span class="font-weight-bold">Return</span> to
+                        send.<span class="font-weight-bold">&nbsp;&nbsp;Shift + Return</span> to add a new
+                        line.</small>
                 </div>
             </div>
         </div>

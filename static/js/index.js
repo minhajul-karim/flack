@@ -54,18 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Display multi-line message instruction
     let textLen = document.querySelector('#message').value.length
     if (textLen > 0) {
-      document.querySelector('#multiline-instruction').style.display = 'block'
+      document.querySelector('#newline-instruction').style.display = 'block'
     } else {
-      document.querySelector('#multiline-instruction').style.display = 'none'
+      document.querySelector('#newline-instruction').style.display = 'none'
     }
   })
 
   // Send message on click
-  document.querySelector('#send-icon').addEventListener('click', () => {
-    if (document.querySelector('#message').value.length > 0) {
-      sendMessage()
-    }
-  })
+  // document.querySelector('#send-icon').addEventListener('click', () => {
+  //   if (document.querySelector('#message').value.length > 0) {
+  //     sendMessage()
+  //   }
+  // })
 
   // Emit message to server
   function sendMessage() {

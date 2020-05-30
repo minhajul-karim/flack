@@ -7,20 +7,42 @@ p {
   list-style: none;
 }
 
-// Navbar background color
-.bg-light {
-  background-color: #350d36 !important;
-  border: 0px !important;
+// Variables
+$navbar_height: 44px;
+$left_side_width: 260px;
+$room_header_height: 28px;
+$textarea_height: 55px;
+$icons_height: 54px;
+$breakpoint-mobile: 599px;
+
+// Mixins
+@mixin header-nav {
+  background-color: #3a133f;
+  overflow: hidden;
+  padding: 10px 20px;
 }
 
-// Logo
-nav .navbar-brand {
-  color: #fff !important;
-  font-size: xx-large;
+// Top nav
+#signup-header-nav {
+  @include header-nav;
+  color: #fff;
 }
 
-.navbar .nav-link {
-  color: #fff !important;
+#home-header-nav {
+  @include header-nav;
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+#home-header-nav ul li:first-child {
+  float: left;
+  color: #fff;
+}
+
+#home-header-nav ul li:last-child {
+  float: right;
 }
 
 .navbar .nav-link:hover {
@@ -43,13 +65,13 @@ nav .navbar-brand {
 }
 
 // Room info
-$left_side_width: 260px;
 #left-side {
   background-color: #3f0e40;
-  height: calc(100vh - 73.27px);
+  height: calc(100vh - #{$navbar_height});
   width: $left_side_width;
   float: left;
   color: #fffafa;
+  position: relative;
 
   // Active status icon
   .fa-circle {
@@ -110,17 +132,23 @@ $left_side_width: 260px;
       font-weight: normal;
     }
   }
+
+  #footer-nav {
+    position: absolute;
+    left: 5%;
+    bottom: 0;
+    padding: 10px;
+
+    a {
+      color: #fff;
+    }
+  }
 }
 
 // Chat messages
-$nav_height: 74px;
-$room_header_height: 28px;
-$textarea_height: 83.89px;
-$icons_height: 37.44px;
-
 #right-side {
   width: calc(100% - #{$left_side_width});
-  height: calc(100vh - #{$nav_height});
+  height: calc(100vh - (#{$navbar_height}));
   float: right;
   padding: 20px;
 
@@ -139,8 +167,8 @@ $icons_height: 37.44px;
     height: calc(
       100vh -
         (
-          #{$nav_height} + #{$room_header_height} + #{$textarea_height} + #{$icons_height} +
-            120px
+          #{$navbar_height} + #{$room_header_height} + #{$textarea_height} + #{$icons_height} +
+            60px
         )
     );
     overflow-y: auto;
@@ -190,13 +218,14 @@ $icons_height: 37.44px;
 
   #icons-area {
     width: 100%;
+    position: relative;
     position: absolute;
     left: 0;
     top: 100%;
     border: 1px solid #ced4da;
     border-radius: 0 0 5px 5px;
 
-    .text-footer {
+    .textarea-icons {
       float: right;
     }
 
@@ -205,23 +234,28 @@ $icons_height: 37.44px;
     }
 
     i {
-      font-size: 30px;
+      font-size: 20px;
       margin-right: 20px;
       margin-top: 10px;
       color: #007bff;
+      cursor: pointer;
     }
   }
 
   textarea {
+    height: $textarea_height;
     resize: none;
     border-bottom: 0 !important;
     border-radius: 5px 5px 0 0 !important;
     outline: none !important;
   }
 
-  #multiline-instruction {
-    // display: none;
-    margin: 10px 10% 0 0;
+  #newline-instruction {
+    position: absolute;
+    left: 0;
+    top: 90px;
+    display: none;
+    margin: 10px 0 0 10px;
   }
 }
 
@@ -246,7 +280,6 @@ $icons_height: 37.44px;
   background: #555;
 }
 
-$breakpoint-mobile: 599px;
 @media (max-width: $breakpoint-mobile) {
   #signup-area {
     .form-control {
