@@ -17,6 +17,10 @@
             window.location.href = "/sign_in";
         }
     </script>
+    <script src="https://kit.fontawesome.com/4ed4b00f74.js" crossorigin="anonymous"></script>
+    <style>
+
+    </style>
 
     <title>Flack</title>
 </head>
@@ -96,20 +100,22 @@
                     </div>
                 </form>
             </div>
-            <div id="test">
-                <img id="output">
-            </div>
         </div>
         <div id="right-side">
             <div id="chat-header"></div>
             <div id="message-area"></div>
-            <div id="input-area">
-                <input type="file" name="" id="file-selector">
-                <textarea class="form-control" id="message" rows="3" placeholder="Write message..."
+            <div id="writing-area">
+                <textarea class="form-control shadow-none" id="message" rows="3" placeholder="Write message..."
                     style="resize: none;"></textarea>
-                <small id="multiline-instruction"><span class="font-weight-bold">Return</span> to
-                    send.<span class="font-weight-bold">&nbsp;&nbsp;&nbsp;Shift + Return</span> to add a new
-                    line</small>
+                <div id="icons-area">
+                    <span class="text-footer"><input type="file" name="" id="file-selector"></span>
+                    <span class="text-footer"><i class="fab fa-telegram-plane" id="send-icon"></i></span>
+                    <span class="text-footer"><label for="file-selector"><i class="fas fa-paperclip"></i></label></span>
+                    <!-- <span class="text-footer"><small id="multiline-instruction"><span
+                                class="font-weight-bold">Return</span> to
+                            send.<span class="font-weight-bold">&nbsp;&nbsp;Shift + Return</span> to add a new
+                            line.</small></span> -->
+                </div>
             </div>
         </div>
     </div>
@@ -125,7 +131,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/8ad34e41bd.js" crossorigin="anonymous"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
         integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"

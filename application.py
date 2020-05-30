@@ -1,6 +1,8 @@
 """Main application."""
 
 import os
+import sys
+import base64
 
 from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, send_file
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
@@ -131,18 +133,7 @@ def new_room(data):
 @socketio.on("file_attachment")
 def file_attachment(data):
     """Emit file."""
-    image_data = data["imageData"]
-    print(image_data)
-    binary_data = a2b_base64(image_data)
-
-    fd = open("test.bmp", "wb")
-    fd.write(binary_data)
-    fd.close()
-    # file = os.path.join(app.root_path,
-    #                     app.config["UPLOAD_FOLDER"], "API.png")
-    # with open(file, 'rb') as f:
-    #     image_data = f.read()
-    # emit("my-image-event", {"image_data": image_data}, broadcast=True)
+    # data_url = data["imageData"]
 
 
 if __name__ == "__main__":
