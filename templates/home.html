@@ -16,7 +16,6 @@
             window.location.href = "/sign_in";
         }
     </script>
-    <!-- <script src="https://kit.fontawesome.com/4ed4b00f74.js" crossorigin="anonymous"></script> -->
     <style>
 
     </style>
@@ -36,13 +35,13 @@
         <div id="left-side">
             <div id="user-info">
                 <p id="username">
-                    <!-- <i class="fas fa-circle"></i> -->
+                    <i class="fas fa-circle"></i>
                 </p>
             </div>
             <div id="rooms">
                 <p id="channels-header">
                     Channels
-                    <!-- <i class="fas fa-plus" data-toggle="modal" data-target="#create-room-form"></i> -->
+                    <i class="fas fa-plus" data-toggle="modal" data-target="#create-room-form"></i>
                 </p>
                 <ul id="rooms-list">
                     {% for room in rooms %}
@@ -106,12 +105,13 @@
                     style="resize: none;"></textarea>
                 <div id="icons-area">
                     <span class="textarea-icons">
-                        <!-- <i class="fab fa-telegram-plane" id="send-icon"></i> -->
+                        <i class="fab fa-telegram-plane" id="send-icon"></i>
                     </span>
-                    <span class="textarea-icons"><input type="file" name="" id="file-selector"></span>
+                    <span class="textarea-icons"><input type="file" name="" id="file-selector" accept="image/*"
+                            multiple></span>
                     <span class="textarea-icons">
                         <label for="file-selector">
-                            <!-- <i class="fas fa-paperclip"></i> -->
+                            <i class="fas fa-paperclip"></i>
                         </label>
                     </span>
                 </div>
@@ -140,6 +140,8 @@
         integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"
         integrity="sha256-usTqAE1ywvdMtksWzdeWzD75MsfJN0h0U7y2NtZL3N0=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/4ed4b00f74.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/download.js') }}"></script>
 
     <script id="message-template" type="text/x-handlebars-template">
         {% raw -%}
@@ -157,6 +159,8 @@
                 <p class="chat-message">
                     {{~message~}}
                 </p>
+                <div class="image-container">
+                    <img src="{{src}}" alt="" id="img-id">
             </div>
         </div>
         {%- endraw %}

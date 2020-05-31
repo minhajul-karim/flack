@@ -133,7 +133,14 @@ def new_room(data):
 @socketio.on("file_attachment")
 def file_attachment(data):
     """Emit file."""
-    # data_url = data["imageData"]
+    name = data["name"]
+    time = data["time"]
+    file_name = data["fileName"]
+    image_data = data["imageData"]
+    room = data["room"]
+    print(name, time, file_name, room)
+    emit("Display image", {"name": name, "time": time,
+                           "file_name": file_name, "image_src": image_data}, room=room)
 
 
 if __name__ == "__main__":

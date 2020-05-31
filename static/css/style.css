@@ -34,10 +34,6 @@ p {
   float: right;
 }
 
-.navbar .nav-link:hover {
-  color: #ecf0f1 !important;
-}
-
 #signup-area {
   text-align: center;
 }
@@ -224,9 +220,27 @@ p {
 #right-side #newline-instruction {
   position: absolute;
   left: 0;
-  top: 90px;
+  top: 70px;
   display: none;
   margin: 10px 0 0 10px;
+}
+
+#right-side .image-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+#right-side .image-container img {
+  width: 200px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+#right-side .image-container img:hover {
+  opacity: 0.5;
 }
 
 /* width */

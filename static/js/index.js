@@ -61,23 +61,16 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   // Send message on click
-  // document.querySelector('#send-icon').addEventListener('click', () => {
-  //   if (document.querySelector('#message').value.length > 0) {
-  //     sendMessage()
-  //   }
-  // })
+  document.querySelector('#send-icon').addEventListener('click', () => {
+    if (document.querySelector('#message').value.length > 0) {
+      sendMessage()
+    }
+  })
 
   // Emit message to server
   function sendMessage() {
     let message = document.querySelector('#message').value
-    let curDate = new Date()
-    let utcTime = curDate.toUTCString()
-    let time =
-      utcTime.slice(0, 4) +
-      ' ' +
-      utcTime.slice(17, 22) +
-      ' ' +
-      utcTime.slice(-3)
+    let time = getCurTime()
 
     socket.send({
       name: name,
@@ -87,6 +80,19 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     // Clear the text area
     document.querySelector('#message').value = ''
+  }
+
+  // Calculate current time
+  function getCurTime() {
+    let curDate = new Date()
+    let utcTime = curDate.toUTCString()
+    let time =
+      utcTime.slice(0, 4) +
+      ' ' +
+      utcTime.slice(17, 22) +
+      ' ' +
+      utcTime.slice(-3)
+    return time
   }
 
   // Display message
@@ -234,40 +240,56 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#message-area').append(p)
   }
 
-  // document.querySelector("#image").addEventListener("click", () => {
-  //     socket.emit("file_attachment", { room: lastRoom });
-  // });
-
-  // socket.on("my-image-event", (data) => {
-  //     console.log(data);
-  //     document.querySelector("#message-area").innerHTML = data["imageData"];
-  // });
-
   // Files
   let fileSelector = document.querySelector('#file-selector')
   fileSelector.addEventListener('change', (event) => {
-    // console.log(event.target.files[0])
-    let file = event.target.files[0],
-      output = document.querySelector('#output'),
-      outputLink = document.querySelector('#output-link')
-
-    if (window.File && window.FileReader) {
-      let reader = new FileReader()
-      reader.addEventListener('load', (event) => {
-        let imageData = event.target.result
-        output.src = imageData
-        outputLink.href = imageData
-        console.log(imageData)
-        socket.emit('file_attachment', {
-          imageData: imageData,
-          room: lastRoom,
-        })
-      })
-      reader.readAsDataURL(file)
-    } else {
-      alert(
-        "Your Browser Doesn't Support The File API Please Update Your Browser"
-      )
+    let files = event.target.files
+    console.log(files)
+    let reader = new FileReader()
+    reader.onload = (event) => {
+      console.log(event)
     }
+    reader.readAsDataURL(files)
+    // if (window.File && window.FileReader) {
+    //   let reader = new FileReader()
+    //   reader.addEventListener('load', (event) => {
+    //     let imageData = event.target.result
+    //     socket.emit('file_attachment', {
+    //       name: name,
+    //       time: getCurTime(),
+    //       // fileName: fileName,
+    //       imageData: imageData,
+    //       room: lastRoom,
+    //     })
+    //   })
+    //   reader.readAsDataURL(file)
+    // } else {
+    //   Error(
+    //     "Your Browser Doesn't Support The File API Please Update Your Browser"
+    //   )
+    // }
   })
+
+  // Display images
+  let fileName = ''
+  socket.on('Display image', (data) => {
+    let imageData = data.image_src
+    fileName = data.file_name
+    console.log(data)
+    let content = messageTemplate({
+      name: data.name,
+      time: data.time,
+      src: imageData,
+    })
+    document.querySelector('#message-area').innerHTML += content
+    goDown()
+  })
+
+  // download has been used to download images form dataUrl.
+  // It takes 2 params, dataUrl and a name
+  document.querySelector('#message-area').onclick = (event) => {
+    if (event.target.nodeName === 'IMG') {
+      download(event.target.src, fileName)
+    }
+  }
 })

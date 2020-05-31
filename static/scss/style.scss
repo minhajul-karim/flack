@@ -45,10 +45,6 @@ $breakpoint-mobile: 599px;
   float: right;
 }
 
-.navbar .nav-link:hover {
-  color: #ecf0f1 !important;
-}
-
 // Sing up
 #signup-area {
   text-align: center;
@@ -253,9 +249,23 @@ $breakpoint-mobile: 599px;
   #newline-instruction {
     position: absolute;
     left: 0;
-    top: 90px;
+    top: 70px;
     display: none;
     margin: 10px 0 0 10px;
+  }
+
+  .image-container {
+    display: flex;
+    flex-wrap: wrap;
+    img {
+      width: 200px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  }
+
+  .image-container img:hover {
+    opacity: 0.5;
   }
 }
 
