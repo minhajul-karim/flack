@@ -227,59 +227,50 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = '/sign_in'
   })
 
+  // Remove active status of a room on room change
   function deactivate() {
     let current_active = document.getElementsByClassName('active')
     current_active[0].className = 'room'
   }
 
-  // Notify users
-  function notify(message) {
-    let p = document.createElement('p')
-    p.innerHTML = message
-    p.className = 'text-muted'
-    document.querySelector('#message-area').append(p)
-  }
-
-  // Files
+  // Load dataURLs of img files & emit those
   let fileSelector = document.querySelector('#file-selector')
   fileSelector.addEventListener('change', (event) => {
-    let files = event.target.files
-    console.log(files)
-    let reader = new FileReader()
-    reader.onload = (event) => {
-      console.log(event)
-    }
-    reader.readAsDataURL(files)
-    // if (window.File && window.FileReader) {
-    //   let reader = new FileReader()
-    //   reader.addEventListener('load', (event) => {
-    //     let imageData = event.target.result
-    //     socket.emit('file_attachment', {
-    //       name: name,
-    //       time: getCurTime(),
-    //       // fileName: fileName,
-    //       imageData: imageData,
-    //       room: lastRoom,
-    //     })
-    //   })
-    //   reader.readAsDataURL(file)
-    // } else {
-    //   Error(
-    //     "Your Browser Doesn't Support The File API Please Update Your Browser"
-    //   )
-    // }
+    let files = event.target.files,
+      imageData = []
+    loadImages(files, imageData, sendImages)
   })
 
+  function loadImages(files, imageData, callback) {
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader()
+      reader.addEventListener('load', (event) => {
+        imageData.push({
+          fileName: files[i].name,
+          dataUrl: event.target.result,
+        })
+        if (i == files.length - 1) callback(imageData)
+      })
+      reader.readAsDataURL(files[i])
+    }
+  }
+
+  function sendImages(imageData) {
+    socket.emit('file_attachment', {
+      name: name,
+      time: getCurTime(),
+      imageData: imageData,
+      room: lastRoom,
+    })
+  }
+
   // Display images
-  let fileName = ''
   socket.on('Display image', (data) => {
-    let imageData = data.image_src
-    fileName = data.file_name
-    console.log(data)
+    let imageData = data.image_data
     let content = messageTemplate({
       name: data.name,
       time: data.time,
-      src: imageData,
+      imageData: imageData,
     })
     document.querySelector('#message-area').innerHTML += content
     goDown()
@@ -289,7 +280,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // It takes 2 params, dataUrl and a name
   document.querySelector('#message-area').onclick = (event) => {
     if (event.target.nodeName === 'IMG') {
-      download(event.target.src, fileName)
+      download(event.target.src, event.target.dataset.fileName)
     }
+  }
+
+  // Notify users
+  function notify(message) {
+    let p = document.createElement('p')
+    p.innerHTML = message
+    p.className = 'text-muted'
+    document.querySelector('#message-area').append(p)
   }
 })

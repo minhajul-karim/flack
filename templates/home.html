@@ -160,7 +160,11 @@
                     {{~message~}}
                 </p>
                 <div class="image-container">
-                    <img src="{{src}}" alt="" id="img-id">
+                    {{#each imageData}}
+                        <div>
+                            <img src="{{this.dataUrl}}" alt="" data-file-name="{{this.fileName}}">
+                        </div>
+                    {{/each}}
             </div>
         </div>
         {%- endraw %}

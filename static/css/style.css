@@ -225,18 +225,16 @@ p {
   margin: 10px 0 0 10px;
 }
 
-#right-side .image-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+#right-side .image-container div {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  float: left;
+  margin: 10px 10px 10px 0;
 }
 
-#right-side .image-container img {
-  width: 200px;
-  margin: 10px;
-  cursor: pointer;
+#right-side .image-container div img {
+  width: 100%;
 }
 
 #right-side .image-container img:hover {
