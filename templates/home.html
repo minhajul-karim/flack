@@ -160,11 +160,12 @@
                     {{~message~}}
                 </p>
                 <div class="image-container">
-                    {{#each imageData}}
+                    {{#each images}}
                         <div>
                             <img src="{{this.dataUrl}}" alt="" data-file-name="{{this.fileName}}">
                         </div>
                     {{/each}}
+                </div>
             </div>
         </div>
         {%- endraw %}
@@ -187,6 +188,13 @@
                     <p class="chat-message">
                         {{~this.message~}}
                     </p>
+                    <div class="image-container">
+                        {{#each images}}
+                            <div>
+                                <img src="{{this.dataUrl}}" alt="" data-file-name="{{this.fileName}}">
+                            </div>
+                        {{/each}}
+                    </div>
                 </div>
             </div>
         {{/each}}

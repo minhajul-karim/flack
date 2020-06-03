@@ -62,20 +62,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Send message on click
   document.querySelector('#send-icon').addEventListener('click', () => {
-    if (document.querySelector('#message').value.length > 0) {
+    if (
+      document.querySelector('#message').value.length > 0 ||
+      images.length > 0
+    ) {
       sendMessage()
     }
   })
 
-  // Emit message to server
+  // Files to send
+  let fileSelector = document.querySelector('#file-selector')
+  fileSelector.addEventListener('change', (event) => {
+    let files = event.target.files
+    loadImages(files, saveImages)
+  })
+
+  function loadImages(files, callback) {
+    let imageData = []
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader()
+        reader.addEventListener('load', (event) => {
+          imageData.push({
+            fileName: files[i].name,
+            dataUrl: event.target.result,
+          })
+          if (i == files.length - 1) callback(imageData)
+        })
+        reader.readAsDataURL(files[i])
+      }
+    }
+  }
+
+  let images = []
+  function saveImages(imageArray) {
+    images = imageArray
+  }
+
+  // Send message
   function sendMessage() {
     let message = document.querySelector('#message').value
-    let time = getCurTime()
 
     socket.send({
       name: name,
       message: message,
-      time: time,
+      images: images,
+      time: getCurTime(),
       room: lastRoom,
     })
     // Clear the text area
@@ -97,10 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Display message
   socket.on('message', (data) => {
+    console.log('Msg rcvd from server')
+    console.log(data)
     let content = messageTemplate({
       name: data.name,
-      message: data.message,
       time: data.time,
+      message: data.message,
+      images: data.images,
     })
     document.querySelector('#message-area').innerHTML += content
     goDown()
@@ -233,27 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     current_active[0].className = 'room'
   }
 
-  // Load dataURLs of img files & emit those
-  let fileSelector = document.querySelector('#file-selector')
-  fileSelector.addEventListener('change', (event) => {
-    let files = event.target.files,
-      imageData = []
-    loadImages(files, imageData, sendImages)
-  })
-
-  function loadImages(files, imageData, callback) {
-    for (let i = 0; i < files.length; i++) {
-      const reader = new FileReader()
-      reader.addEventListener('load', (event) => {
-        imageData.push({
-          fileName: files[i].name,
-          dataUrl: event.target.result,
-        })
-        if (i == files.length - 1) callback(imageData)
-      })
-      reader.readAsDataURL(files[i])
-    }
-  }
+  function haveImages() {}
 
   function sendImages(imageData) {
     socket.emit('file_attachment', {
