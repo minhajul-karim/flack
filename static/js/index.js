@@ -235,7 +235,15 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault()
       // Initialize a new request
       let request = new XMLHttpRequest()
-      let newRoom = document.querySelector('#room-name').value
+      let roomName = document.querySelector('#room-name').value
+      let errorElement = document.querySelector('.error-message')
+      // Show error for empty room name
+      if (roomName.length === 0) {
+        errorElement.innerHTML = 'Invalid input!'
+        errorElement.style.display = 'block'
+        return
+      }
+
       request.open('POST', '/create_room')
 
       // Callback function when the request is complete
@@ -246,16 +254,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (request.status >= 200 && request.status < 300) {
           if (data.status === true) {
             socket.emit('new room', {
-              newRoom: newRoom,
+              newRoom: roomName,
             })
 
             // Join new room
-            join_room(newRoom)
+            join_room(roomName)
 
-            // Click the close button
+            // Click the cross
             document.querySelector('.close').click()
           } else {
-            document.querySelector('#room-error').style.display = 'block'
+            errorElement.innerHTML = 'Channel already exists!'
+            errorElement.style.display = 'block'
           }
         } else {
           Error('Can not connect.')
@@ -264,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Send data with the request
       let data = new FormData()
-      data.append('newRoom', newRoom)
+      data.append('newRoom', roomName)
       request.send(data)
     })
 
@@ -272,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let roomName = document.querySelector('#room-name')
   roomName.addEventListener('keyup', (event) => {
     if (event.keyCode != 13) {
-      document.querySelector('#room-error').style.display = 'none'
+      document.querySelector('.error-message').style.display = 'none'
     }
   })
 

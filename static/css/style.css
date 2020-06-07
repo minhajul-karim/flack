@@ -132,8 +132,7 @@ p {
   color: #808080;
 }
 
-#left-side #room-error {
-  display: none;
+#left-side .error-message {
   color: red;
 }
 

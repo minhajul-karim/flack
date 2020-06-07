@@ -23,6 +23,11 @@ $breakpoint-large-screen: 1025px;
   padding: 10px 20px;
 }
 
+@mixin error {
+  display: none;
+  color: red;
+}
+
 // Top nav
 #signup-header-nav {
   @include header-nav;
@@ -150,9 +155,9 @@ $breakpoint-large-screen: 1025px;
     color: #808080;
   }
 
-  #room-error {
-    display: none;
+  .error-message {
     color: red;
+    // display: none;
   }
 
   #footer-nav {

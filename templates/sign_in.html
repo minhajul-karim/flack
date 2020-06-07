@@ -13,24 +13,6 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
     <title>Flack</title>
-    <script>
-
-        document.addEventListener('DOMContentLoaded', () => {
-
-            document.querySelector('#name-button').onclick = () => {
-
-                const name = document.querySelector('#name').value;
-                localStorage.setItem('name', name);
-
-                // Redirect users to home page
-                window.location.href = '/';
-                return false;
-
-            }
-
-        })
-
-    </script>
 </head>
 
 <body>
@@ -42,12 +24,12 @@
 
     <div id="signup-wrapper">
         <h1 class="display-4 py-2">Sign Up</h1>
-        <form action="#" method="POST" id="reg_form">
+        <small class="error-message"></small>
+        <form id="signup-form">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter your name" name="name" id="name" required
-                    autofocus>
+                <input type="text" class="form-control" placeholder="Enter your name" id="name" autofocus required>
             </div>
-            <button type="submit" class="btn btn-primary btn-lg" id="name-button">Enter</button>
+            <button type="submit" class="btn btn-primary btn-lg" id="submit-button">Enter</button>
         </form>
         <div id="signup-footer-nav">
             <ul class="list-inline text-center">
@@ -71,6 +53,30 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script>
+        // Input validation, login
+        document.addEventListener('DOMContentLoaded', () => {
+            const name = document.querySelector('#name'),
+                errorMessage = document.querySelector('.error-message')
+            document.querySelector('#signup-form').addEventListener('submit', (event) => {
+                event.preventDefault()
+                // Display error message for empty username
+                if (name.value.length === 0) {
+                    errorMessage.innerHTML = 'Invalid input!'
+                    errorMessage.setAttribute('style', 'display: block; padding-bottom: 10px;')
+                    return
+                }
+                // Save username & redirect users to home page
+                localStorage.setItem('name', name.value)
+                window.location.href = '/';
+            })
+
+            // Remove error message
+            name.addEventListener('keyup', (event) => {
+                document.querySelector('.error-message').style.display = 'none'
+            })
+        })
+    </script>
 </body>
 
 </html>
