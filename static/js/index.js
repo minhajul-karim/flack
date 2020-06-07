@@ -1,14 +1,18 @@
-// Template for an individual message
+// Template messages
 let messageTemplate = Handlebars.compile(
   document.querySelector('#message-template').innerHTML
 )
 
-// Template for chat history of a room
+// Template for chat history
 let chatHistoryTemplate = Handlebars.compile(
   document.querySelector('#chat-history').innerHTML
 )
 
-// When the DOM is loaded
+// Template for thumbnails
+let thumbnailsTemplate = Handlebars.compile(
+  document.querySelector('#thumbnail-images').innerHTML
+)
+
 document.addEventListener('DOMContentLoaded', () => {
   // Display the user name
   let name = localStorage.getItem('name')
@@ -51,13 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.keyCode === 13 && !event.shiftKey) {
       sendMessage()
     }
-    // Display multi-line message instruction
-    let textLen = document.querySelector('#message').value.length
-    if (textLen > 0) {
-      document.querySelector('#newline-instruction').style.display = 'block'
-    } else {
-      document.querySelector('#newline-instruction').style.display = 'none'
-    }
   })
 
   // Send message on click
@@ -70,13 +67,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  // Files to send
+  // When user selects images, we read them,
+  // show thumnails of selected images, & finally
+  // send them to server
   let fileSelector = document.querySelector('#file-selector')
   fileSelector.addEventListener('change', (event) => {
     let files = event.target.files
-    loadImages(files, saveImages)
+    loadImages(files, showThumbnail)
   })
 
+  /*
+   * Read images as data url asynchronously
+   * and callback showThumbnail()
+   */
   function loadImages(files, callback) {
     let imageData = []
     if (files) {
@@ -94,9 +97,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  let images = []
-  function saveImages(imageArray) {
+  /*
+   * Display thumbnail of selected images
+   */
+  let images = [],
+    messageArea = document.querySelector('#message-area'),
+    messageAreaHeight = messageArea.offsetHeight
+  function showThumbnail(imageArray) {
     images = imageArray
+    // Generate thumbnail template
+    document.querySelector('#thumbnails').innerHTML = ''
+    document.querySelector('#thumbnails').style.display = 'block'
+
+    let content = thumbnailsTemplate({
+      images: images,
+    })
+
+    messageArea.style.height = messageAreaHeight - 118 + 'px'
+
+    document.querySelector('#thumbnails').innerHTML += content
   }
 
   // Send message
@@ -110,11 +129,15 @@ document.addEventListener('DOMContentLoaded', () => {
       time: getCurTime(),
       room: lastRoom,
     })
-    // Clear the text area
+    // Clear the text and thumbnail
     document.querySelector('#message').value = ''
+    document.querySelector('#thumbnails').style.display = 'none'
+    messageArea.style.height = messageAreaHeight + 'px'
   }
 
-  // Calculate current time
+  /*
+   * Calculate current time
+   */
   function getCurTime() {
     let curDate = new Date()
     let utcTime = curDate.toUTCString()
@@ -127,10 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return time
   }
 
-  // Display message
+  // Display received message
   socket.on('message', (data) => {
-    console.log('Msg rcvd from server')
-    console.log(data)
     let content = messageTemplate({
       name: data.name,
       time: data.time,
@@ -160,16 +181,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  // Join room
+  /*
+   * Join a room
+   */
   function join_room(room) {
     socket.emit('join', { name: name, room: room })
-
-    // Set last visited room
     lastRoom = room
     localStorage.setItem('lastRoom', room)
   }
 
-  // Generate chat history
+  // Display past discussions
   socket.on('chat history', (data) => {
     // Clear previous chat header and chats
     document.querySelector('#chat-header').innerHTML = ''
@@ -192,56 +213,70 @@ document.addEventListener('DOMContentLoaded', () => {
     goDown()
   })
 
-  // Move to the end of conversation
+  /*
+   * Move to the bottom of the conversation
+   */
   function goDown() {
     let element = document.querySelector('#message-area')
     element.scrollTop = element.scrollHeight - element.clientHeight
   }
 
-  // Leave room
+  /*
+   * Leave a room
+   */
   function leave_room(room) {
     socket.emit('leave', { name: name, room: room })
   }
 
   // Create new room
-  document.querySelector('#new-room-form').onsubmit = () => {
-    // Initialize a new request
-    let request = new XMLHttpRequest()
-    let newRoom = document.querySelector('#room-name').value
-    request.open('POST', '/create_room')
+  document
+    .querySelector('#new-room-form')
+    .addEventListener('submit', (event) => {
+      event.preventDefault()
+      // Initialize a new request
+      let request = new XMLHttpRequest()
+      let newRoom = document.querySelector('#room-name').value
+      request.open('POST', '/create_room')
 
-    // Callback function when the request is complete
-    request.onload = () => {
-      // Extract data received from server
-      let data = JSON.parse(request.responseText)
+      // Callback function when the request is complete
+      request.onload = () => {
+        // Extract data received from server
+        let data = JSON.parse(request.responseText)
 
-      if (request.status >= 200 && request.status < 300) {
-        if (data.status === true) {
-          socket.emit('new room', {
-            newRoom: newRoom,
-          })
+        if (request.status >= 200 && request.status < 300) {
+          if (data.status === true) {
+            socket.emit('new room', {
+              newRoom: newRoom,
+            })
 
-          // Join new room
-          join_room(newRoom)
+            // Join new room
+            join_room(newRoom)
 
-          // Click the close button
-          document.querySelector('#close-button').click()
+            // Click the close button
+            document.querySelector('.close').click()
+          } else {
+            document.querySelector('#room-error').style.display = 'block'
+          }
         } else {
-          document.querySelector('#room-error').style.display = 'block'
+          Error('Can not connect.')
         }
-      } else {
-        console.log(Error('Can not connect.'))
       }
+
+      // Send data with the request
+      let data = new FormData()
+      data.append('newRoom', newRoom)
+      request.send(data)
+    })
+
+  // Remove error message while editing room name
+  let roomName = document.querySelector('#room-name')
+  roomName.addEventListener('keyup', (event) => {
+    if (event.keyCode != 13) {
+      document.querySelector('#room-error').style.display = 'none'
     }
+  })
 
-    // Send data with the request
-    let data = new FormData()
-    data.append('newRoom', newRoom)
-    request.send(data)
-    return false
-  }
-
-  // Add new rooom to DOM
+  // Add new rooom to channels list
   socket.on('display new room', (data) => {
     let newRoom = data.room
     let li = document.createElement('li')
@@ -262,48 +297,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = '/sign_in'
   })
 
-  // Remove active status of a room on room change
+  /*
+   * Remove active status of a room on room change
+   */
   function deactivate() {
     let current_active = document.getElementsByClassName('active')
     current_active[0].className = 'room'
   }
 
-  function haveImages() {}
-
-  function sendImages(imageData) {
-    socket.emit('file_attachment', {
-      name: name,
-      time: getCurTime(),
-      imageData: imageData,
-      room: lastRoom,
-    })
-  }
-
-  // Display images
-  socket.on('Display image', (data) => {
-    let imageData = data.image_data
-    let content = messageTemplate({
-      name: data.name,
-      time: data.time,
-      imageData: imageData,
-    })
-    document.querySelector('#message-area').innerHTML += content
-    goDown()
-  })
-
-  // download has been used to download images form dataUrl.
-  // It takes 2 params, dataUrl and a name
+  // Download images via download.js
+  // download function takes 2 params, dataUrl and a name
   document.querySelector('#message-area').onclick = (event) => {
     if (event.target.nodeName === 'IMG') {
       download(event.target.src, event.target.dataset.fileName)
     }
-  }
-
-  // Notify users
-  function notify(message) {
-    let p = document.createElement('p')
-    p.innerHTML = message
-    p.className = 'text-muted'
-    document.querySelector('#message-area').append(p)
   }
 })

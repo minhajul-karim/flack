@@ -11,9 +11,10 @@ p {
 $navbar_height: 44px;
 $left_side_width: 260px;
 $room_header_height: 28px;
-$textarea_height: 55px;
+$textarea_height: 100px;
 $icons_height: 54px;
 $breakpoint-mobile: 599px;
+$breakpoint-large-screen: 1025px;
 
 // Mixins
 @mixin header-nav {
@@ -26,6 +27,26 @@ $breakpoint-mobile: 599px;
 #signup-header-nav {
   @include header-nav;
   color: #fff;
+  margin-bottom: 20vh;
+}
+
+#signup-wrapper {
+  width: 300px;
+  min-height: 100%;
+  margin: 0 auto;
+  text-align: center;
+  padding-bottom: 150px;
+  position: relative;
+  .form-control {
+    display: inline-block;
+  }
+}
+
+#signup-footer-nav {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
 
 #home-header-nav {
@@ -45,16 +66,6 @@ $breakpoint-mobile: 599px;
   float: right;
 }
 
-// Sing up
-#signup-area {
-  text-align: center;
-
-  .form-control {
-    display: inline-block;
-    width: 300px;
-  }
-}
-
 // Chat page
 #chat-page {
   max-width: 100% !important;
@@ -63,11 +74,12 @@ $breakpoint-mobile: 599px;
 // Room info
 #left-side {
   background-color: #3f0e40;
-  height: calc(100vh - #{$navbar_height});
+  min-height: calc(100vh - #{$navbar_height});
   width: $left_side_width;
   float: left;
   color: #fffafa;
   position: relative;
+  overflow-y: auto;
 
   // Active status icon
   .fa-circle {
@@ -91,6 +103,11 @@ $breakpoint-mobile: 599px;
       margin-left: 130px;
       cursor: pointer;
     }
+  }
+
+  #rooms {
+    height: calc(100vh - 152px);
+    overflow-y: auto;
   }
 
   #rooms p {
@@ -121,7 +138,7 @@ $breakpoint-mobile: 599px;
 
   // Form to create new room
   #new-room-form {
-    h5 {
+    h4 {
       color: #000;
     }
     p {
@@ -129,14 +146,25 @@ $breakpoint-mobile: 599px;
     }
   }
 
+  #channel-text {
+    color: #808080;
+  }
+
+  #room-error {
+    display: none;
+    color: red;
+  }
+
   #footer-nav {
     position: absolute;
-    left: 5%;
+    left: 0;
+    right: 0;
     bottom: 0;
     padding: 10px;
 
     a {
       color: #fff;
+      text-decoration: none;
     }
   }
 }
@@ -212,9 +240,34 @@ $breakpoint-mobile: 599px;
     position: relative;
   }
 
+  // Thumbnails
+  #thumbnails {
+    white-space: nowrap;
+    overflow: auto;
+    padding: 5px;
+    border-top: 1px solid #eee;
+    display: none;
+
+    .image-div {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    img {
+      width: 100%;
+      opacity: 1;
+    }
+
+    .image-div:hover img {
+      opacity: 0.5;
+    }
+  }
+
   #icons-area {
     width: 100%;
-    position: relative;
     position: absolute;
     left: 0;
     top: 100%;
@@ -231,7 +284,7 @@ $breakpoint-mobile: 599px;
 
     i {
       font-size: 20px;
-      margin-right: 20px;
+      margin-right: 15px;
       margin-top: 10px;
       color: #007bff;
       cursor: pointer;
@@ -246,14 +299,7 @@ $breakpoint-mobile: 599px;
     outline: none !important;
   }
 
-  #newline-instruction {
-    position: absolute;
-    left: 0;
-    top: 70px;
-    display: none;
-    margin: 10px 0 0 10px;
-  }
-
+  // Image in messages
   .image-container div {
     width: 200px;
     height: 200px;
@@ -273,26 +319,29 @@ $breakpoint-mobile: 599px;
 // Scrollbar
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  height: 8px;
+  width: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
+  border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: #007bff;
+  border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #2980b9;
 }
 
 @media (max-width: $breakpoint-mobile) {
-  #signup-area {
+  #signup-wrapper {
     .form-control {
       width: auto;
     }
@@ -306,5 +355,11 @@ $breakpoint-mobile: 599px;
   }
   #right-side {
     width: calc(100% - #{$small_left_side_width});
+  }
+}
+
+@media all and (min-width: $breakpoint-large-screen) {
+  #signup-wrapper {
+    padding-bottom: 250px;
   }
 }

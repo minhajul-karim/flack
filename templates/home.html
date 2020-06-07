@@ -39,7 +39,7 @@
                 </p>
             </div>
             <div id="rooms">
-                <p id="channels-header">
+                <p id="channels-header" class="mb-2">
                     Channels
                     <i class="fas fa-plus" data-toggle="modal" data-target="#create-room-form"></i>
                 </p>
@@ -56,30 +56,29 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="new-room-form-header">
-                                        Create channel
-                                    </h5>
+                                    <h4 class="modal-title" id="new-room-form-header">
+                                        Create a channel
+                                    </h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                     <br />
                                 </div>
                                 <div class="modal-body">
-                                    <p style="color: red; display: none;" id="room-error" class="text-center">
+                                    <p class="mb-2" id="channel-text">Channels are where your team communicates. They’re
+                                        best when
+                                        organized around a
+                                        topic — #marketing, for example.</p>
+                                    <small id="room-error" class="text-center">
                                         Channel already exists!
-                                    </p>
+                                    </small>
 
-                                    <div class="form-group">
-                                        <label for="room-name" class="col-form-label">Name:</label>
+                                    <div class="form-group mt-4">
                                         <input type="text" class="form-control" id="room-name"
-                                            placeholder="e.g. #marketing" autocomplete="off" autofocus />
+                                            placeholder="e.g. #marketing" autocomplete="off" autofocus required />
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" id="close-button"
-                                        data-dismiss="modal">
-                                        Close
-                                    </button>
                                     <button type="submit" class="btn btn-primary">
                                         Create
                                     </button>
@@ -101,6 +100,7 @@
             <div id="chat-header"></div>
             <div id="message-area"></div>
             <div id="writing-area">
+                <div id="thumbnails"></div>
                 <textarea class="form-control shadow-none" id="message" rows="3" placeholder="Write message..."
                     style="resize: none;"></textarea>
                 <div id="icons-area">
@@ -114,11 +114,6 @@
                             <i class="fas fa-paperclip"></i>
                         </label>
                     </span>
-                </div>
-                <div id="newline-instruction">
-                    <small><span class="font-weight-bold">Return</span> to
-                        send.<span class="font-weight-bold">&nbsp;&nbsp;Shift + Return</span> to add a new
-                        line.</small>
                 </div>
             </div>
         </div>
@@ -162,7 +157,7 @@
                 <div class="image-container">
                     {{#each images}}
                         <div>
-                            <img src="{{this.dataUrl}}" alt="" data-file-name="{{this.fileName}}">
+                            <img src="{{this.dataUrl}}" alt="{{this.fileName}}" data-file-name="{{this.fileName}}">
                         </div>
                     {{/each}}
                 </div>
@@ -191,11 +186,20 @@
                     <div class="image-container">
                         {{#each images}}
                             <div>
-                                <img src="{{this.dataUrl}}" alt="" data-file-name="{{this.fileName}}">
+                                <img src="{{this.dataUrl}}" alt="{{this.fileName}}" data-file-name="{{this.fileName}}">
                             </div>
                         {{/each}}
                     </div>
                 </div>
+            </div>
+        {{/each}}
+        {%- endraw %}
+    </script>
+    <script id="thumbnail-images" type="text/x-handlebars-template">
+        {% raw -%}
+        {{#each images}}
+            <div class="image-div">
+                <img src="{{this.dataUrl}}" alt="{{this.fileName}}" data-file-name="{{this.fileName}}">
             </div>
         {{/each}}
         {%- endraw %}
