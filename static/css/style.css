@@ -276,14 +276,15 @@ p {
 
 #right-side .image-container div {
   width: 200px;
-  height: 200px;
+  height: 100px;
   overflow: hidden;
   float: left;
-  margin: 10px 10px 10px 0;
+  margin: 0px 10px 10px 0;
 }
 
 #right-side .image-container div img {
   width: 100%;
+  cursor: pointer;
 }
 
 #right-side .image-container img:hover {

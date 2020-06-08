@@ -1,14 +1,15 @@
 """Main application."""
 
-import os
-
-from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
+from flask import Flask, render_template, request, jsonify
+import os
+import eventlet
 
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
+eventlet.monkey_patch()
 
 # Store chats, channels
 chats = {"general": []}
@@ -53,20 +54,34 @@ def message(data):
     # Save the most 100 chat messages
     if room in chats:
         if len(chats[room]) == 100:
+            socketio.sleep(0)
             chats[room].pop(0)
             chats[room].append(
-                {"name": name, "time": time, "message": message, "images": images})
+                {"name": name,
+                 "time": time,
+                 "message": message,
+                 "images": images})
         else:
             chats[room].append(
-                {"name": name, "time": time, "message": message, "images": images})
+                {"name": name,
+                 "time": time,
+                 "message": message,
+                 "images": images})
     else:
         rooms.append(room)
         chats[room] = []
         chats[room].append(
-            {"name": name, "time": time, "message": message, "images": images})
+            {"name": name,
+             "time": time,
+             "message": message,
+             "images": images})
 
     # Send data to client
-    send({"name": name, "time": time, "message": message, "images": images}, room=room)
+    send(
+        {"name": name,
+         "time": time,
+         "message": message,
+         "images": images}, room=room)
 
 
 @socketio.on("join")
