@@ -83,6 +83,11 @@ p {
   padding: 20px;
 }
 
+#left-side #user-info i {
+  float: left;
+  margin: 6px 10px 0 0;
+}
+
 #left-side #channels-header {
   margin-left: 20px;
 }

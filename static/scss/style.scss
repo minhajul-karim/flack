@@ -95,6 +95,10 @@ $breakpoint-large-screen: 1025px;
   // Username
   #user-info {
     padding: 20px;
+    i {
+      float: left;
+      margin: 6px 10px 0 0;
+    }
   }
 
   #channels-header {

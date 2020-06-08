@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Display the user name
   let name = localStorage.getItem('name'),
     lastRoom = localStorage.getItem('lastRoom')
-  document.querySelector('#username').textContent += `${name}`
+  document.querySelector('#loggedin-user').textContent += `${name}`
 
   // Connect to websocket
   const socket = io.connect(
