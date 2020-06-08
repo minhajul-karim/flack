@@ -23,11 +23,6 @@ $breakpoint-large-screen: 1025px;
   padding: 10px 20px;
 }
 
-@mixin error {
-  display: none;
-  color: red;
-}
-
 // Top nav
 #signup-header-nav {
   @include header-nav;
@@ -74,6 +69,10 @@ $breakpoint-large-screen: 1025px;
 // Chat page
 #chat-page {
   max-width: 100% !important;
+}
+
+.error-message {
+  color: red;
 }
 
 // Room info
@@ -153,11 +152,6 @@ $breakpoint-large-screen: 1025px;
 
   #channel-text {
     color: #808080;
-  }
-
-  .error-message {
-    color: red;
-    // display: none;
   }
 
   #footer-nav {

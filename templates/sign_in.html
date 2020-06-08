@@ -57,12 +57,12 @@
         // Input validation, login
         document.addEventListener('DOMContentLoaded', () => {
             const name = document.querySelector('#name'),
-                errorMessage = document.querySelector('.error-message')
+                errorMessage = document.querySelector('#signup-wrapper .error-message')
             document.querySelector('#signup-form').addEventListener('submit', (event) => {
                 event.preventDefault()
                 // Display error message for empty username
                 if (name.value.length === 0) {
-                    errorMessage.innerHTML = 'Invalid input!'
+                    errorMessage.textContent = 'Invalid input!'
                     errorMessage.setAttribute('style', 'display: block; padding-bottom: 10px;')
                     return
                 }
@@ -73,7 +73,9 @@
 
             // Remove error message
             name.addEventListener('keyup', (event) => {
-                document.querySelector('.error-message').style.display = 'none'
+                if (event.keyCode != 13) {
+                    errorMessage.style.display = 'none'
+                }
             })
         })
     </script>

@@ -59,6 +59,10 @@ p {
   max-width: 100% !important;
 }
 
+.error-message {
+  color: red;
+}
+
 #left-side {
   background-color: #3f0e40;
   min-height: calc(100vh - 44px);
@@ -130,10 +134,6 @@ p {
 
 #left-side #channel-text {
   color: #808080;
-}
-
-#left-side .error-message {
-  color: red;
 }
 
 #left-side #footer-nav {
