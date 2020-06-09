@@ -54,7 +54,6 @@ def message(data):
     # Save the most 100 chat messages
     if room in chats:
         if len(chats[room]) == 100:
-            socketio.sleep(0)
             chats[room].pop(0)
             chats[room].append(
                 {"name": name,
