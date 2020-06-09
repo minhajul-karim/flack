@@ -3,7 +3,7 @@
 
 This is an online messaging service, similar in spirit to Slack. Users are able to sign into this site with a display name, create channels (i.e. chatrooms) to communicate in, as well as see and join existing channels. Once a channel is selected, users will be able to send and receive messages and images with one another in real time.
 
-### Installation
+## Installation
 After you've cloned or downloaded the repository, you need to install the required packages via the following commands.
 
 If you use pipenv for your virtual environment:
@@ -27,12 +27,12 @@ To deploy in Heroku, create a `Procfile` and put the following command inside it
 
 More details about deployment can be found [here](https://flask-socketio.readthedocs.io/en/latest/#deployment).
 
-### Usage
+## Usage
 Visit [the site](https://flack-chat-application.herokuapp.com/), register yourself and you'll be added to a common room called general. Write a message and hit the `send` button or the `return` key to send a message. Use `shift + return` keys to insert a new line. To attach images, click on the `paperclip` icon and select your images. You may also create channels if you wish. To do so, click the `+` icon on the top left of your screen. Click `logout` on the top right corner to log out. You can catch up with the ongoing conversation after you log in again.
 
 ## Privacy
-* Your name and channel history resides in your browser.
-* Up to last 100 messages and shared images per channel are saved in the server.
+* Your name and channel history resides in your machine using [localstorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
+* Up to last 100 messages with or without images per channel are saved in the server.
 
 ## File Description
 
