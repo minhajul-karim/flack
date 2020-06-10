@@ -141,8 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
       let roomName = document.querySelector('#room-name').value
       // Show error for empty room name
       if (roomName.length === 0) {
-        errorElement.textContent = 'Invalid input!'
-        errorElement.style.display = 'block'
+        const pElement = document.createElement('p')
+        pElement.textContent = 'Invalid input!'
+        pElement.classList.add('error')
+        document.querySelector('.error-div').appendChild(pElement)
         return
       }
 
@@ -183,7 +185,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const roomName = document.querySelector('#room-name')
   roomName.addEventListener('keyup', (event) => {
     if (event.keyCode != 13) {
-      document.querySelector('.error-message').style.display = 'none'
+      const errorMsg = document.querySelector('.error')
+      if (errorMsg) {
+        errorMsg.style.animationPlayState = 'running'
+        errorMsg.addEventListener('animationend', () => {
+          errorMsg.remove()
+        })
+      }
     }
   })
 
@@ -213,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Display room name at the top
     const pElement = document.createElement('p')
-    pElement.appendChild(document.createTextNode(`${lastRoom}`)) // Use textContent?
+    pElement.textContent = lastRoom
     document.querySelector('#chat-header').appendChild(pElement)
 
     // Place an <hr> after room name

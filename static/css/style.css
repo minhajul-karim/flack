@@ -1,3 +1,51 @@
+@-webkit-keyframes hide {
+  0% {
+    opacity: 1;
+    height: 100%;
+    line-height: 100%;
+    font-size: 100%;
+    margin-bottom: 10px;
+  }
+  75% {
+    opacity: 0;
+    height: 100%;
+    line-height: 100%;
+    font-size: 100%;
+    margin-bottom: 10px;
+  }
+  100% {
+    opacity: 0;
+    height: 0px;
+    line-height: 0px;
+    font-size: 0px;
+    margin-bottom: 0px;
+  }
+}
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+    height: 100%;
+    line-height: 100%;
+    font-size: 100%;
+    margin-bottom: 10px;
+  }
+  75% {
+    opacity: 0;
+    height: 100%;
+    line-height: 100%;
+    font-size: 100%;
+    margin-bottom: 10px;
+  }
+  100% {
+    opacity: 0;
+    height: 0px;
+    line-height: 0px;
+    font-size: 0px;
+    margin-bottom: 0px;
+  }
+}
+
 ul,
 li,
 body,
@@ -59,8 +107,17 @@ p {
   max-width: 100% !important;
 }
 
-.error-message {
+.error {
   color: red;
+  margin: 0px 0px 10px 0;
+  -webkit-animation-name: hide;
+          animation-name: hide;
+  -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
 }
 
 #left-side {

@@ -1,3 +1,29 @@
+// Animation to hide error messages
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+    height: 100%;
+    line-height: 100%;
+    font-size: 100%;
+    margin-bottom: 10px;
+  }
+  75% {
+    opacity: 0;
+    height: 100%;
+    line-height: 100%;
+    font-size: 100%;
+    margin-bottom: 10px;
+  }
+  100% {
+    opacity: 0;
+    height: 0px;
+    line-height: 0px;
+    font-size: 0px;
+    margin-bottom: 0px;
+  }
+}
+
 ul,
 li,
 body,
@@ -71,8 +97,14 @@ $breakpoint-large-screen: 1025px;
   max-width: 100% !important;
 }
 
-.error-message {
+// Error message
+.error {
   color: red;
+  margin: 0px 0px 10px 0;
+  animation-name: hide;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-play-state: paused;
 }
 
 // Room info

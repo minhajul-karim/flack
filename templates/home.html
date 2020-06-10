@@ -67,11 +67,11 @@
                                 <div class="modal-body">
                                     <p class="mb-2" id="channel-text">Channels are where your team communicates. They’re
                                         best when organized around a topic — #marketing, for example.</p>
-                                    <small class="error-message text-center"></small>
+                                    <div class="error-div text-center"></div>
 
-                                    <div class="form-group mt-4">
+                                    <div class=" form-group mt-4">
                                         <input type="text" class="form-control" id="room-name"
-                                            placeholder="e.g. #marketing" autocomplete="off" autofocus required>
+                                            placeholder="e.g. #marketing" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -206,7 +206,7 @@
         {%- endraw %}
     </script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-    <script>
+    <!-- <script>
         // Clear error message and unsuccessful room name
         // every time new room form appears
         $(document).ready(function () {
@@ -219,7 +219,7 @@
                 $('#room-name').trigger('focus');
             });
         });
-    </script>
+    </script> -->
 </body>
 
 </html>

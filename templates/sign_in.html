@@ -24,10 +24,10 @@
 
     <div id="signup-wrapper">
         <h1 class="display-4 py-2">Sign Up</h1>
-        <small class="error-message"></small>
+        <div class="error-div"></div>
         <form id="signup-form">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter your name" id="name" autofocus required>
+                <input type="text" class="form-control" placeholder="Enter your name" id="name">
             </div>
             <button type="submit" class="btn btn-primary btn-lg" id="submit-button">Enter</button>
         </form>
@@ -57,32 +57,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script>
-        // Input validation, login
-        document.addEventListener('DOMContentLoaded', () => {
-            const name = document.querySelector('#name'),
-                errorMessage = document.querySelector('#signup-wrapper .error-message')
-            document.querySelector('#signup-form').addEventListener('submit', (event) => {
-                event.preventDefault()
-                // Display error message for empty username
-                if (name.value.length === 0) {
-                    errorMessage.textContent = 'Invalid input!'
-                    errorMessage.setAttribute('style', 'display: block; padding-bottom: 10px;')
-                    return
-                }
-                // Save username & redirect users to home page
-                localStorage.setItem('name', name.value)
-                window.location.href = '/';
-            })
-
-            // Remove error message
-            name.addEventListener('keyup', (event) => {
-                if (event.keyCode != 13) {
-                    errorMessage.style.display = 'none'
-                }
-            })
-        })
-    </script>
+    <script src="{{ url_for('static', filename='js/sign_in.js') }}"></script>
 </body>
 
 </html>
