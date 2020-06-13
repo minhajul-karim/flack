@@ -84,17 +84,24 @@ document.addEventListener('DOMContentLoaded', () => {
     images = []
   function showThumbnail(imageArray) {
     images = imageArray
-    // Generate thumbnail template
-    document.querySelector('#thumbnails').innerHTML = ''
+    const thumbnail = document.querySelector('#thumbnails')
+
+    // Remove previous thumbnails
+    while (thumbnail.firstChild) {
+      thumbnail.removeChild(thumbnail.firstChild)
+    }
     document.querySelector('#thumbnails').style.display = 'block'
 
+    // Generate thumbnail template
     const content = thumbnailsTemplate({
       images: images,
     })
 
+    // Increase the hieght of message area to accomodate thumbanail
     messageArea.style.height = messageAreaHeight - 118 + 'px'
-
-    document.querySelector('#thumbnails').innerHTML += content
+    document
+      .querySelector('#thumbnails')
+      .insertAdjacentHTML('beforeend', content)
   }
 
   // Send messages on pressing Enter key
@@ -126,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
       message: data.message,
       images: data.images,
     })
-    document.querySelector('#message-area').innerHTML += content
+    messageArea.insertAdjacentHTML('beforeend', content)
     goDown()
   })
 
@@ -141,6 +148,11 @@ document.addEventListener('DOMContentLoaded', () => {
       let roomName = document.querySelector('#room-name').value
       // Show error for empty room name
       if (roomName.length === 0) {
+        // Remove previous error message, if any
+        const errorMsg = document.querySelector('.error')
+        if (errorMsg) {
+          errorMsg.parentNode.removeChild(errorMsg)
+        }
         const pElement = document.createElement('p')
         pElement.textContent = 'Invalid input!'
         pElement.classList.add('error')
@@ -167,8 +179,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Click the cross
             document.querySelector('.close').click()
           } else {
-            errorElement.textContent = 'Channel already exists!'
-            errorElement.style.display = 'block'
+            const errorMsg = document.querySelector('.error')
+            if (errorMsg) {
+              errorMsg.parentNode.removeChild(errorMsg)
+            }
+            const pElement = document.createElement('p')
+            pElement.textContent = 'Channel already exists!'
+            pElement.classList.add('error')
+            document.querySelector('.error-div').appendChild(pElement)
           }
         } else {
           Error('Can not connect.')
@@ -216,21 +234,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // Display past discussions
   socket.on('chat history', (data) => {
     // Clear previous chat header and chats
-    document.querySelector('#chat-header').innerHTML = ''
-    document.querySelector('#message-area').innerHTML = ''
+    const chatHeader = document.querySelector('#chat-header')
+
+    // Clear chat header
+    while (chatHeader.firstChild) {
+      chatHeader.removeChild(chatHeader.firstChild)
+    }
+
+    // Clear message area
+    while (messageArea.firstChild) {
+      messageArea.removeChild(messageArea.firstChild)
+    }
 
     // Display room name at the top
     const pElement = document.createElement('p')
     pElement.textContent = lastRoom
-    document.querySelector('#chat-header').appendChild(pElement)
+    chatHeader.appendChild(pElement)
 
     // Place an <hr> after room name
-    let hr = document.createElement('hr')
-    document.querySelector('#chat-header').appendChild(hr)
+    const hrElement = document.createElement('hr')
+    document.querySelector('#chat-header').appendChild(hrElement)
 
     // Feed data to chat history template
     let content = chatHistoryTemplate({ chats: data['chats'] })
-    document.querySelector('#message-area').innerHTML += content
+    messageArea.insertAdjacentHTML('beforeend', content)
 
     // Scroll to the bottom of corversation
     goDown()

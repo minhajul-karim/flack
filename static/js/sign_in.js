@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault()
     // Display error message for empty username
     if (name.value.length === 0) {
+      // Remove previous error message, if any
+      const errorMsg = document.querySelector('.error')
+      if (errorMsg) {
+        errorMsg.parentNode.removeChild(errorMsg)
+      }
       const pElement = document.createElement('p')
       pElement.textContent = 'Invalid input!'
       pElement.classList.add('error')
