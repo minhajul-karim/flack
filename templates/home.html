@@ -2,144 +2,142 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.ico') }}" />
 
-    <script>
-        if (!localStorage.getItem("name")) {
-            window.location.href = "/sign_in";
-        }
-    </script>
-    <style>
+  <script>
+    if (!localStorage.getItem("name")) {
+      window.location.href = "/sign_in";
+    }
+  </script>
+  <style>
 
-    </style>
+  </style>
 
-    <title>Flack</title>
+  <title>Flack</title>
 </head>
 
 <body>
-    <nav id="home-header-nav">
-        <ul class="list-inline">
-            <li class="list-inline-item font-weight-bold">Flack</li>
-            <li class="list-inline-item"><a class="text-center" href="" id="logout">Logout</a></li>
+  <nav id="home-header-nav">
+    <ul class="list-inline">
+      <li class="list-inline-item font-weight-bold">Flack</li>
+      <li class="list-inline-item"><a class="text-center" href="" id="logout">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div id="main-area">
+    <div id="left-side">
+      <div id="user-info">
+        <i class="fas fa-circle"></i>
+        <p id="loggedin-user"></p>
+      </div>
+      <div id="rooms">
+        <p id="channels-header" class="mb-2">
+          Channels
+          <i class="fas fa-plus" data-toggle="modal" data-target="#create-room-form"></i>
+        </p>
+        <ul id="rooms-list">
+          {% for room in rooms %}
+          <li class="room">{{ room }}</li>
+          {% endfor %}
         </ul>
-    </nav>
 
-    <div id="main-area">
-        <div id="left-side">
-            <div id="user-info">
-                <i class="fas fa-circle"></i>
-                <p id="loggedin-user"></p>
-            </div>
-            <div id="rooms">
-                <p id="channels-header" class="mb-2">
-                    Channels
-                    <i class="fas fa-plus" data-toggle="modal" data-target="#create-room-form"></i>
-                </p>
-                <ul id="rooms-list">
-                    {% for room in rooms %}
-                    <li class="room">{{ room }}</li>
-                    {% endfor %}
-                </ul>
-
-                <!-- New room form -->
-                <form id="new-room-form">
-                    <div class="modal fade" id="create-room-form" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="new-room-form-header">
-                                        Create a channel
-                                    </h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <br />
-                                </div>
-                                <div class="modal-body">
-                                    <p class="mb-2" id="channel-text">Channels are where your team communicates. They’re
-                                        best when organized around a topic — #marketing, for example.</p>
-                                    <div class="error-div text-center"></div>
-
-                                    <div class=" form-group mt-4">
-                                        <input type="text" class="form-control" id="room-name"
-                                            placeholder="e.g. #marketing" autocomplete="off" required>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">
-                                        Create
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div id="footer-nav">
-                <ul class="list-inline text-center">
-                    <li class="list-inline-item"><a class="text-center" href="https://github.com/minhajul-karim/flack/"
-                            target="_blank"><small>View Code</small></a></li>
-                    <li class="list-inline-item"><a class="text-center"
-                            href="https://github.com/minhajul-karim/flack/issues" target="_blank"><small>Report a
-                                bug</small></a></li>
-                    <li class="list-inline-item"><a class="text-center"
-                            href="https://github.com/minhajul-karim/flack#privacy"
-                            target="_blank"><small>Privacy</small></a></li>
-                </ul>
-            </div>
-        </div>
-        <div id="right-side">
-            <div id="chat-header"></div>
-            <div id="message-area"></div>
-            <div id="writing-area">
-                <div id="thumbnails"></div>
-                <textarea class="form-control shadow-none" id="message" rows="3" placeholder="Write message..."
-                    style="resize: none;"></textarea>
-                <div id="icons-area">
-                    <span class="textarea-icons">
-                        <i class="fab fa-telegram-plane" id="send-icon"></i>
-                    </span>
-                    <span class="textarea-icons"><input type="file" name="" id="file-selector" accept="image/*"
-                            multiple></span>
-                    <span class="textarea-icons">
-                        <label for="file-selector">
-                            <i class="fas fa-paperclip"></i>
-                        </label>
-                    </span>
+        <!-- New room form -->
+        <form id="new-room-form">
+          <div class="modal fade" id="create-room-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="new-room-form-header">
+                    Create a channel
+                  </h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <br />
                 </div>
+                <div class="modal-body">
+                  <p class="mb-2" id="channel-text">Channels are where your team communicates. They’re
+                    best when organized around a topic — #marketing, for example.</p>
+                  <div class="error-div text-center"></div>
+
+                  <div class=" form-group mt-4">
+                    <input type="text" class="form-control" id="room-name" placeholder="e.g. #marketing"
+                      autocomplete="off" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">
+                    Create
+                  </button>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
+        </form>
+      </div>
+      <div id="footer-nav">
+        <ul class="list-inline text-center">
+          <li class="list-inline-item"><a class="text-center" href="https://github.com/minhajul-karim/flack/"
+              target="_blank"><small>View Code</small></a></li>
+          <li class="list-inline-item"><a class="text-center" href="https://github.com/minhajul-karim/flack/issues"
+              target="_blank"><small>Report a
+                bug</small></a></li>
+          <li class="list-inline-item"><a class="text-center" href="https://github.com/minhajul-karim/flack#privacy"
+              target="_blank"><small>Privacy</small></a></li>
+        </ul>
+      </div>
     </div>
+    <div id="right-side">
+      <div id="chat-header"></div>
+      <div id="message-area"></div>
+      <div id="writing-area">
+        <div id="thumbnails"></div>
+        <textarea class="form-control shadow-none" id="message" rows="3" placeholder="Write message..."
+          style="resize: none;"></textarea>
+        <div id="icons-area">
+          <span class="textarea-icons"><input type="file" name="" id="file-selector" accept="image/*" multiple></span>
+          <span class="textarea-icons paperclip-icon">
+            <label for="file-selector">
+              <i class="fas fa-paperclip"></i>
+            </label>
+          </span>
+          <span class="textarea-icons telegram-plane-icon">
+            <i class="fab fa-telegram-plane" id="send-icon"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
-        integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"
-        integrity="sha256-usTqAE1ywvdMtksWzdeWzD75MsfJN0h0U7y2NtZL3N0=" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/4ed4b00f74.js" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='js/download.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+    integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"
+    integrity="sha256-usTqAE1ywvdMtksWzdeWzD75MsfJN0h0U7y2NtZL3N0=" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/4ed4b00f74.js" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/download.js') }}"></script>
 
-    <script id="message-template" type="text/x-handlebars-template">
+  <script id="message-template" type="text/x-handlebars-template">
         {% raw -%}
         <div class="message-block">
             <div class="chat-left">
@@ -167,7 +165,7 @@
         {%- endraw %}
     </script>
 
-    <script id="chat-history" type="text/x-handlebars-template">
+  <script id="chat-history" type="text/x-handlebars-template">
         {% raw -%}
         {{#each chats}}
             <div class="message-block">
@@ -196,7 +194,7 @@
         {{/each}}
         {%- endraw %}
     </script>
-    <script id="thumbnail-images" type="text/x-handlebars-template">
+  <script id="thumbnail-images" type="text/x-handlebars-template">
         {% raw -%}
         {{#each images}}
             <div class="image-div">
@@ -205,20 +203,20 @@
         {{/each}}
         {%- endraw %}
     </script>
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-    <script>
-        // Clear error message and unsuccessful room name
-        // every time new room form appears
-        $(document).ready(function () {
-            $('#create-room-form').on('show.bs.modal', function (event) {
-                const errorMsg = document.querySelector('.error')
-                if (errorMsg) {
-                    errorMsg.parentNode.removeChild(errorMsg)
-                }
-                document.querySelector('#room-name').value = '';
-            });
-        });
-    </script>
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+  <script>
+    // Clear error message and unsuccessful room name
+    // every time new room form appears
+    $(document).ready(function () {
+      $('#create-room-form').on('show.bs.modal', function (event) {
+        const errorMsg = document.querySelector('.error')
+        if (errorMsg) {
+          errorMsg.parentNode.removeChild(errorMsg)
+        }
+        document.querySelector('#room-name').value = '';
+      });
+    });
+  </script>
 </body>
 
 </html>
