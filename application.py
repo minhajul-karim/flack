@@ -9,7 +9,7 @@ import eventlet
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
-eventlet.monkey_patch()
+# eventlet.monkey_patch()
 
 # Store chats, channels
 chats = {"general": []}

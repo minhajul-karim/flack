@@ -366,6 +366,11 @@ p {
   opacity: 0.5;
 }
 
+.fa-paperclip,
+.fa-telegram-plane {
+  cursor: pointer;
+}
+
 /* width */
 ::-webkit-scrollbar {
   height: 8px;

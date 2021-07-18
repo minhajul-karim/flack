@@ -309,6 +309,10 @@ $breakpoint-large-screen: 1025px;
     border: 1px solid #ced4da;
     border-radius: 0 0 5px 5px;
 
+    .fa-paperclip {
+      cursor: pointer;
+    }
+
     .textarea-icons {
       float: right;
     }
