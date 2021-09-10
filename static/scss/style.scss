@@ -107,15 +107,21 @@ $breakpoint-large-screen: 1025px;
   animation-play-state: paused;
 }
 
+#main-area {
+  display: flex;
+  position: relative;
+}
+
 // Room info
 #left-side {
   background-color: #3f0e40;
   min-height: calc(100vh - #{$navbar_height});
   width: $left_side_width;
-  float: left;
+  // float: left;
   color: #fffafa;
   position: relative;
   overflow-y: auto;
+  z-index: 999;
 
   // Active status icon
   .fa-circle {
@@ -208,12 +214,16 @@ $breakpoint-large-screen: 1025px;
 #right-side {
   width: calc(100% - #{$left_side_width});
   height: calc(100vh - (#{$navbar_height}));
-  float: right;
+  // float: right;
   padding: 20px;
 
   // Room header
   #chat-header p {
     font-weight: bold;
+  }
+
+  #toggle-btn {
+    margin-right: 10px;
   }
 
   .chat-message {
@@ -380,21 +390,51 @@ $breakpoint-large-screen: 1025px;
   background: #2980b9;
 }
 
+// Media queries
+// @media (min-width: $breakpoint-mobile) {
+//   #left-side {
+//     position: absolute;
+//     left: 0;
+//   }
+//   #right-side {
+//     width: calc(100% - #{$small_left_side_width});
+//   }
+// }
+
+.hide-sidebar {
+  display: none;
+}
+
+.show-sidebar {
+  display: block !important;
+  position: absolute !important;
+}
+
+#toggle-btn {
+  display: none;
+  border: 0;
+}
+
 @media (max-width: $breakpoint-mobile) {
   #signup-wrapper {
     .form-control {
       width: auto;
     }
   }
-  $small_left_side_width: 150px;
+  $small_left_side_width: 200px;
   #left-side {
-    width: $small_left_side_width;
+    // width: $small_left_side_width;
     .fa-plus {
       margin-left: 25px !important;
     }
+    display: none;
   }
   #right-side {
-    width: calc(100% - #{$small_left_side_width});
+    // width: calc(100% - #{$small_left_side_width});
+    width: 100%;
+  }
+  #toggle-btn {
+    display: block;
   }
 }
 
