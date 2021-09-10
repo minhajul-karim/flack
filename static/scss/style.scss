@@ -419,6 +419,10 @@ $breakpoint-large-screen: 1025px;
   border: 0;
 }
 
+.show {
+  z-index: 99 !important;
+}
+
 @media (max-width: $breakpoint-mobile) {
   #signup-wrapper {
     .form-control {

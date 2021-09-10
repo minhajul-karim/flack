@@ -415,6 +415,10 @@ p {
   border: 0;
 }
 
+.show {
+  z-index: 99 !important;
+}
+
 @media (max-width: 599px) {
   #signup-wrapper .form-control {
     width: auto;
