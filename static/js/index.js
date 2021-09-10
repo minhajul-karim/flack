@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Send message on click
-  document.querySelector("#send-icon").addEventListener("click", () => {
+  document.getElementById("send-icon").addEventListener("click", () => {
     if (
       document.querySelector("#message").value.length > 0 ||
       images.length > 0
@@ -380,7 +380,10 @@ document.addEventListener("DOMContentLoaded", () => {
       id === "right-side" ||
       id === "chat-header" ||
       e.target.classList.contains("toggle-container") ||
-      e.target.nodeName === 'HR'
+      e.target.classList.contains("chat-right") ||
+      e.target.nodeName === 'HR' ||
+      e.target.nodeName === 'TEXTAREA' ||
+      e.target.nodeName === 'P'
     ) {
       if (shouldDisplaySidebar) {
         sidebar.classList.remove('show-sidebar')

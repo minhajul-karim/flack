@@ -132,6 +132,9 @@ $breakpoint-large-screen: 1025px;
 
   // Username
   #user-info {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     padding: 20px;
     i {
       float: left;
@@ -316,15 +319,16 @@ $breakpoint-large-screen: 1025px;
     position: absolute;
     left: 0;
     top: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    padding: 7px;
     border: 1px solid #ced4da;
     border-radius: 0 0 5px 5px;
 
     .fa-paperclip {
       cursor: pointer;
-    }
-
-    .textarea-icons {
-      float: right;
+      margin-right: 7px;
     }
 
     #file-selector {
